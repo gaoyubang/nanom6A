@@ -2,7 +2,17 @@
 
 **Quantitative profiling of N6-methyladenosine at single-base resolution using Nanopore direct RNA sequencing**
 
-Two step detail of nanom6A
+The fast5 raw file of nanopore direct rna sequence  in this method is below:
+
+rep1:
+
+Under uploading to ncbi.
+
+rep2:
+
+https://sra-download.ncbi.nlm.nih.gov/traces/sra68/SRZ/012822/SRR12822922/Ptr-WT-SDX-20200827.tar
+
+Indexs
 
 **Download scripts and run test files**
 
@@ -101,7 +111,17 @@ run_source_code.sh
 
 `predict_sites -i extrat.feature -o result_final -r $refbed6 -g $genome`
                         
+The main output is the ratio.x.tsv and genome_abandance.x.bed in the output dir.
 
+The header of ratio.x.tsv.
+gene\|chrom | coordinate\|mod number\|total number\|mod ratio 
+---|---
+ACTB|chr7	5566813\|162\|639.0\|0.2535211267605634	
+The header of genome_abandance.x.bed.
+
+chrom | coordinate|gene| read id|read pos|kmer
+---|---|---|---|---|---
+chr7|5567320|ACTB	|e88129423ae1.fast5	|1257	|AAACA
 ##### 3. Visualization of m6A sites in single-base and single DRS read resolution
 
 `plot_m6A -c nanom6A/conf_plot.txt`
