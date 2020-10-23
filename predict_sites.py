@@ -16,7 +16,7 @@ def predict(tpp,fl1,dir1):
 		# ~ ins_match[ele[0]]=float(ele[-2])
 	###########################################################
 	# ~ FLAGS.abspath="/media/gyb/big_enough1/H/nanom6A/epinano_rep1"
-	model = joblib.load(filename="%s/model/%s.m"%(FLAGS.abspathexe,tpp))
+	model = joblib.load(filename="%s/%s.m"%(FLAGS.model.rstrip("/"),tpp))
 	X=[]
 	Y=[]
 	for i in open(fl1,"r"):
@@ -149,12 +149,12 @@ def tsvparese(basefl):
 	pass
 def read2genome2(basefl):
 	cmd="cat {0}/AAACA.mod  {0}/AAACC.mod  {0}/AAACT.mod  {0}/AGACA.mod  {0}/AGACC.mod  {0}/AGACT.mod  {0}/GAACA.mod  {0}/GAACC.mod  {0}/GAACT.mod  {0}/GGACA.mod  {0}/GGACC.mod  {0}/GGACT.mod >{0}/total_mod.tsv".format(basefl)
-	# ~ os.system(cmd)
+	os.system(cmd)
 	fl="{0}/total_mod.tsv".format(basefl)
 	storepos=readprediction(fl)
 	fl=FLAGS.input+".feature.fa"
 	store=readfasta(fl)
-	fl="%s/extract.sort.tsv.gz"%(basefl)
+	fl="%s/extract.sort.bam.tsv.gz"%(basefl)
 	##########################################
 	# ~ chr04	W_003002_20180416_FAH83697_MN23410_sequencing_run_20180415_FAH83697_mRNA_WT_Col0_2918_23801_read_57_ch_290_strand.fast5	-	10201753	10201753	236|10203065|GAACA	275|10202917|AGACC	991|10202201|GGACA	1003|10202189|AGACC	1373|10201819|AAACA
 	# ~ c1,c2,c3=0,0,0
@@ -262,7 +262,7 @@ def pare_annotation(fl):
 def site2corrd(basefl):
 	fl="%s/extract.bed6.gene"%(basefl)
 	geneids=pare_annotation(fl)
-	fl="%s/sam_parse.txt"%(basefl)
+	fl="%s/sam_parse2.txt"%(basefl)
 	sites=pare_sam_site(fl,geneids)
 	fl="{0}/total_mod.tsv".format(basefl)
 	limit=float(FLAGS.proba)
@@ -468,45 +468,62 @@ def run_main():
 	# ~ ####################################
 	print("2.start mapping")
 	fl1=FLAGS.input+".feature.fa"
-	cmd="%s/minimap2_pre --secondary=no -ax splice -uf -k14 -t %s %s  %s|%s/samtools_pre view -@ %s -bS - |%s/samtools_pre sort -@ %s - >%s/extract.sort.bam"%(FLAGS.abspathexe,FLAGS.cpu,FLAGS.genome,fl1,FLAGS.abspathexe,FLAGS.cpu,FLAGS.abspathexe,FLAGS.cpu,basefl)
-	# ~ os.system(cmd)
-	subprocess.call(cmd, shell=True)
-	cmd="%s/samtools_pre index %s/extract.sort.bam"%(FLAGS.abspathexe,basefl)
-	# ~ os.system(cmd)
-	subprocess.call(cmd, shell=True)
-	cmd="%s/samtools_pre view %s/extract.sort.bam >%s/extract.sam"%(FLAGS.abspathexe,basefl,basefl)
-	# ~ os.system(cmd)
-	subprocess.call(cmd, shell=True)
-	cmd="%s/samtools_pre depth %s/extract.sort.bam >%s/extract.depth"%(FLAGS.abspathexe,basefl,basefl)
-	# ~ os.system(cmd)
-	subprocess.call(cmd, shell=True)
-	cmd="%s/samtools_pre faidx %s"%(FLAGS.abspathexe,fl1)
-	# ~ os.system(cmd)
-	subprocess.call(cmd, shell=True)
+	cmd="%sminimap2 --secondary=no -ax splice -uf -k14 -t %s %s  %s|%ssamtools view -@ %s -bS - |%ssamtools sort -@ %s - >%s/extract.sort.bam"%(FLAGS.abspathexe,FLAGS.cpu,FLAGS.genome,fl1,FLAGS.abspathexe,FLAGS.cpu,FLAGS.abspathexe,FLAGS.cpu,basefl)
+	os.system(cmd)
+	cmd="%ssamtools index %s/extract.sort.bam"%(FLAGS.abspathexe,basefl)
+	os.system(cmd)
+	cmd="%ssamtools view %s/extract.sort.bam >%s/extract.sam"%(FLAGS.abspathexe,basefl,basefl)
+	os.system(cmd)
+	cmd="%ssamtools depth %s/extract.sort.bam >%s/extract.depth"%(FLAGS.abspathexe,basefl,basefl)
+	os.system(cmd)
+	cmd="%ssamtools faidx %s"%(FLAGS.abspathexe,fl1)
+	os.system(cmd)
 	print("gene annotation")
-	cmd="%s/bedtools_pre bamtobed -bed12 -split -i %s/extract.sort.bam >%s/extract.bed12"%(FLAGS.abspathexe,basefl,basefl)
-	# ~ os.system(cmd)
-	subprocess.call(cmd, shell=True)
+	cmd="%sbedtools bamtobed -bed12 -split -i %s/extract.sort.bam >%s/extract.bed12"%(FLAGS.abspathexe,basefl,basefl)
+	os.system(cmd)
 	cmd="cut -f 1,2,3,4,5,6 %s/extract.bed12 >%s/extract.bed6"%(basefl,basefl)
-	# ~ os.system(cmd)
-	subprocess.call(cmd, shell=True)
-	cmd="%s/bedtools_pre intersect  -a %s -b %s/extract.bed6 -wo|bedtools groupby -g 1,2,3,4,6 -c 10 -o collapse >%s/extract.bed6.gene"%(FLAGS.abspathexe,FLAGS.referance,basefl,basefl)
-	# ~ os.system(cmd)
-	subprocess.call(cmd, shell=True)
+	os.system(cmd)
+	cmd="%sbedtools intersect  -a %s -b %s/extract.bed6 -wo|bedtools groupby -g 1,2,3,4,6 -c 10 -o collapse >%s/extract.bed6.gene"%(FLAGS.abspathexe,FLAGS.referance,basefl,basefl)
+	os.system(cmd)
+	cmd='sam2tsv -r {1} {0}/extract.sort.bam|gzip -c >{0}/extract.sort.bam.tsv.gz'.format(basefl,FLAGS.genome)
+	os.system(cmd)
 	print("parse bam")
 	# ~ ################################################################################
 	print("3.m6A site to genome sites")
-	read2genome1(basefl)
+	# ~ read2genome1(basefl)
+	read2genome2(basefl)
 	site2corrd(basefl)
 	ratio(basefl)
 	##################################
 	# ~ method2(basefl)
 	####################################################################################
 def dependence_check():
-	cmd="%s/samtools_pre"
-	cmd="%s/bedtools_pre"
-	cmd="%s/minimap2_pre"
-	pass
+	#genome file
+	fa=FLAGS.genome
+	if fa.endswith("fa") or fa.endswith("fasta"):
+		pass
+	else:
+		sys.exit("please check your genome file, make shure it's end with fa or fasta!\n")
+	sys.stderr.write("genome file ok!\n")
+	#############
+	#genome file index
+	faidx1=".".join(fa.split(".")[:-1])+".dict"
+	faidx2=fa+".fai"
+	if os.path.isfile(faidx1) and os.path.isfile(faidx2):
+		pass
+	else:
+		sys.exit("please check your genome file index, make shure you index with samtools index and picard CreateSequenceDictionary !\n")
+	sys.stderr.write("genome file index ok!\n")
+	##############
+	for com in ["samtools","bedtools","minimap2","sam2tsv"]:
+		cmd="which %s"%(com)
+		pids=subprocess.getstatusoutput(cmd)
+		if pids[1]:
+			sys.stderr.write("%s ok!\n"%(com))
+		else:
+			sys.exit("please check %s in your $PATH !\n"%(com))
+	#############
+	sys.stderr.write("check finsh!\n")
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Predict to genome sites.')
 	parser.add_argument('-i', '--input', required = True,help="features_extract")
@@ -516,11 +533,15 @@ if __name__ == "__main__":
 	parser.add_argument('--cpu', default=8,help='cpu number usage')
 	parser.add_argument('--support', default=3,help='one m6A site supported read number')
 	parser.add_argument('--proba', default=0.5,help='m6A site predict probability')
+	parser.add_argument('--model', help='model dir')
 	args = parser.parse_args(sys.argv[1:])
 	global FLAGS
 	FLAGS = args
-	folder_path, file_name = os.path.split(os.path.abspath(__file__))
-	FLAGS.abspath=folder_path
-	FLAGS.abspathexe=os.path.dirname(os.path.realpath(sys.executable))
+	FLAGS.abspathexe=""
+	# ~ folder_path, file_name = os.path.split(os.path.abspath(__file__))
+	# ~ FLAGS.abspath=folder_path
+	# ~ FLAGS.abspathexe=os.path.dirname(os.path.realpath(sys.executable))
+	dependence_check()
 	run_main()
-##################################################
+###########################################################
+
