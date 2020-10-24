@@ -6,7 +6,7 @@ The fast5 raw file of nanopore direct rna sequence  in this method is below:
 
 rep1:
 
-Under uploading to ncbi.
+https://sra-download.ncbi.nlm.nih.gov/traces/sra36/SRZ/012881/SRR12881185/poplar_guppy_recall.tar.gz
 
 rep2:
 
