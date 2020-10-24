@@ -45,6 +45,7 @@ tqdm                               |4.32.1
 
 soft or module | version
 ---|---
+sam2tsv |
 bedtools | v2.29.2
 samtools | 1.3.1
 minimap2 | 2.17-r941
