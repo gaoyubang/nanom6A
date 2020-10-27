@@ -1,4 +1,4 @@
-nom6A
+# Nanom6A
 
 **Quantitative profiling of N6-methyladenosine at single-base resolution using Nanopore direct RNA sequencing**
 
@@ -66,7 +66,7 @@ binary python executable file and example file
 ```
 tar -xvzf binary_2020_10_24.tar.gz
 cd binary_2020_10_24
-export PATH=`pwd`/binary_2020_10_24/:$PATH
+export PATH=`pwd`/binary_2020_10_24/bin/:$PATH
 sh run.sh
 ```
 source code and example file
