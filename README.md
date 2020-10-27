@@ -25,6 +25,9 @@ Indexs
 The scripts was pre-compiled into binary. You can download from google drive.
 https://drive.google.com/drive/folders/1Dodt6uJC7lBihSNgT3Mexzpl_uqBagu0?usp=sharing
 
+Test in **Linux:Deepin 15.11 stable**
+
+
 **(2)**
  If the binary was not work, you can also compile by yourself. The Dependence was show blow.
 
