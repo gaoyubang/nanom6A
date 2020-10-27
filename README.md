@@ -69,7 +69,7 @@ binary python executable file and example file
 ```
 tar -xvzf binary_2020_10_24.tar.gz
 cd binary_2020_10_24
-export PATH=`pwd`/binary_2020_10_24/bin/:$PATH
+export PATH=`pwd`/bin/:$PATH
 sh run.sh
 ```
 source code and example file
