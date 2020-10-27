@@ -31,7 +31,7 @@ Test in **Linux:Deepin 15.11 stable**
 **(2)**
  If the binary was not work, you can also compile by yourself. The Dependence was show blow.
 
-`git clone https://github.com/gaobaibai/nanom6A.git`
+`git clone https://github.com/gaoyubang/nanom6A.git`
 
 **Source code dependence**
 
