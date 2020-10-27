@@ -1,4 +1,4 @@
-# Nanom6A
+nom6A
 
 **Quantitative profiling of N6-methyladenosine at single-base resolution using Nanopore direct RNA sequencing**
 
@@ -45,7 +45,6 @@ tqdm                               |4.32.1
 
 soft or module | version
 ---|---
-sam2tsv |
 bedtools | v2.29.2
 samtools | 1.3.1
 minimap2 | 2.17-r941
@@ -63,11 +62,12 @@ pyBigWig                      |0.3.17
 
 ## Run test files
 
-binary python executable file
+binary python executable file and example file
 ```
-unzip binary_2020_10_15.tar.gz
-tar -xvzf c.tar.gz 
-export PATH=`pwd`/binary_2020_10_15.tar.gz:$PATH
+tar -xvzf binary_2020_10_24.tar.gz
+cd binary_2020_10_24
+export PATH=`pwd`/binary_2020_10_24/:$PATH
+sh run.sh
 ```
 source code and example file
 ```
@@ -75,8 +75,6 @@ git clone https://github.com/gaobaibai/nanom6A.git
 cd nanom6A
 cd model && gunzip *gz && cd ../
 cd data && gunzip *gz && cd ../
-#binary
-sh run.sh
 #source code
 run_source_code.sh
 ```
@@ -118,7 +116,6 @@ The header of ratio.x.tsv.
 gene\|chrom | coordinate\|mod number\|total number\|mod ratio 
 ---|---
 ACTB|chr7	5566813\|162\|639.0\|0.2535211267605634	
-
 
 The header of genome_abandance.x.bed.
 
