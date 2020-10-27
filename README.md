@@ -19,19 +19,41 @@ Indexs
 **Details about how this pipeline works**
 
 **Train your own model**
-## Download  pre-compiled bianry or source code or docker image
+## Download  pre-compiled bianry and source code or docker image
 
 **(1)**
 The scripts was pre-compiled into binary. You can download from google drive.
 https://drive.google.com/drive/folders/1Dodt6uJC7lBihSNgT3Mexzpl_uqBagu0?usp=sharing
+ ```
+binary_2020_10_28.tar.gz
+ ```
 
-Test in **Linux:Deepin 15.11 stable**
+Test in  ubuntu.
 
+
+**Linux:ubuntu 16.04**
+
+may need to install.
+
+ ```
+apt install libgomp1
+
+apt install libxcb1
+```
+
+**Linux:ubuntu 20.04**
+
+
+**Linux:ubuntu 20.10**
+
+may need to install.
+ ```
+apt install libncurses5
+ ```
 
 **(2)**
- If the binary was not work, you can also compile by yourself. The Dependence was show blow.
+ If the binary was not work, you can also run the python source code in the downloaded file. The Dependence was show blow.
 
-`git clone https://github.com/gaoyubang/nanom6A.git`
 
 **Source code dependence**
 
@@ -52,8 +74,8 @@ bedtools | v2.29.2
 samtools | 1.3.1
 minimap2 | 2.17-r941
 python                               |3.7.3
-joblib                        |0.14.1
-xgboost                       |0.90
+joblib                        |0.16.0
+xgboost                       |0.80
 pysam                         |0.16.0.1
 tqdm                          |4.39.0
 pycairo                       |1.19.1
@@ -67,22 +89,18 @@ pyBigWig                      |0.3.17
 
 binary python executable file and example file
 ```
-tar -xvzf binary_2020_10_24.tar.gz
-cd binary_2020_10_24
-export PATH=`pwd`/bin/:$PATH
-sh run.sh
+tar -xvzf binary_2020_10_28.tar.gz
+cd binary_2020_10_28
+sh run_binary.sh
 ```
 source code and example file
-```
-git clone https://github.com/gaobaibai/nanom6A.git
-cd nanom6A
-cd model && gunzip *gz && cd ../
-cd data && gunzip *gz && cd ../
-#source code
-run_source_code.sh
-```
 
-
+Please make shure the dependence is ok.
+```
+tar -xvzf binary_2020_10_28.tar.gz
+cd binary_2020_10_28
+sh run_source_code.sh
+```
 
 ## Details about how this pipeline works
 ##### 1. Preprocess
