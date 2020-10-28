@@ -117,7 +117,6 @@ tqdm                          |4.39.0
 pycairo                       |1.19.1
 scikit-learn              |0.22
 
-
 **(3)**
  The easiest way is running with docker.
  
@@ -187,17 +186,17 @@ Because of the cairo library incompatibility problem, It has no effect on the ou
 
 ###### list all fast5 file
 
-`find single -name "*.fast5" >all_f5.list `
+`find single -name "*.fast5" >files.txt`
 
 ##### 2.extract normalized raw signals and predict
 
 ###### extract signals
 
-`extract_raw_and_feature_fast --cpu=8  --fl=all_f5.list -o extrat.feature --clip=10` 
+`extract_raw_and_feature_fast --cpu=20  --fl=files.txt -o result --clip=10` 
 
 ###### predict m6A site
 
-`predict_sites -i extrat.feature -o result_final -r $refbed6 -g $genome`
+`predict_sites --cpu 20  -i result -o result_final -r data/anno.bed -g data/anno.fa`
                         
 The main output is the ratio.x.tsv and genome_abandance.x.bed in the output dir.
 
@@ -213,7 +212,7 @@ chrom | coordinate|gene| read id|read pos|kmer
 chr7|5567320|ACTB	|e88129423ae1.fast5	|1257	|AAACA
 ##### 3. Visualization of m6A sites in single-base and single DRS read resolution
 
-`plot_m6A -c nanom6A/conf_plot.txt`
+`nanoplot --input result_final  -o plot_nano_plot`
 
 ### Train your own model
 
