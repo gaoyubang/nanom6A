@@ -2,23 +2,7 @@
 
 **Quantitative profiling of N6-methyladenosine at single-base resolution using Nanopore direct RNA sequencing**
 
-The fast5 raw file of nanopore direct rna sequence  in this method is below:
 
-rep1:
-
-https://sra-download.ncbi.nlm.nih.gov/traces/sra36/SRZ/012881/SRR12881185/poplar_guppy_recall.tar.gz
-
-rep2:
-
-https://sra-download.ncbi.nlm.nih.gov/traces/sra68/SRZ/012822/SRR12822922/Ptr-WT-SDX-20200827.tar
-
-Indexs
-
-**Download scripts and run test files**
-
-**Details about how this pipeline works**
-
-**Train your own model**
 ## Download  pre-compiled binary and source code or docker image
 
 **(1)**
@@ -158,10 +142,10 @@ sh run_docker.sh
 
 The test output log show this error
 ```
-cat: result_final/AGACA.mod: 没有那个文件或目录
-cat: result_final/AGACT.mod: 没有那个文件或目录
-cat: result_final/GAACA.mod: 没有那个文件或目录
-cat: result_final/GAACT.mod: 没有那个文件或目录
+cat: result_final/AGACA.mod: No such file or directory
+cat: result_final/AGACT.mod: No such file or directory
+cat: result_final/GAACA.mod: No such file or directory
+cat: result_final/GAACT.mod: No such file or directory
 ```
 Because of the ACTB gene contains no the four kmer.
 ```
@@ -217,4 +201,17 @@ chr7|5567320|ACTB	|e88129423ae1.fast5	|1257	|AAACA
 ### Train your own model
 
 `python train.py`
+
+
+### The fast5 raw file of nanopore direct rna sequence  in this method is below:
+
+rep1:
+
+https://sra-download.ncbi.nlm.nih.gov/traces/sra36/SRZ/012881/SRR12881185/poplar_guppy_recall.tar.gz
+
+rep2:
+
+https://sra-download.ncbi.nlm.nih.gov/traces/sra68/SRZ/012822/SRR12822922/Ptr-WT-SDX-20200827.tar
+
+
 ##### All suggestions are welcome to lfgu@fafu.edu.cn or yubanggaofafu@gmail.com 
