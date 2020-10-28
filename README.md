@@ -116,6 +116,8 @@ pysam                         |0.16.0.1
 tqdm                          |4.39.0
 pycairo                       |1.19.1
 scikit-learn              |0.22
+
+
 **(3)**
  The easiest way is running with docker.
  
