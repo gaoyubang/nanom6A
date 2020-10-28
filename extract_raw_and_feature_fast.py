@@ -4,7 +4,7 @@ import os,sys,re,h5py
 import multiprocessing
 from statsmodels import robust
 import numpy as np
-import joblib
+#import joblib
 from tqdm import tqdm
 ##################################
 def get_label_raw(fast5_fn, basecall_group, basecall_subgroup,reverse = False):

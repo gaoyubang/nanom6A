@@ -19,13 +19,13 @@ Indexs
 **Details about how this pipeline works**
 
 **Train your own model**
-## Download  pre-compiled bianry and source code or docker image
+## Download  pre-compiled binary and source code or docker image
 
 **(1)**
 The scripts was pre-compiled into binary. You can download from google drive.
 https://drive.google.com/drive/folders/1Dodt6uJC7lBihSNgT3Mexzpl_uqBagu0?usp=sharing
  ```
-binary_2020_10_28.tar.gz
+binary_2020_10_29.tar.gz
  ```
 
 Test in  ubuntu.
@@ -50,10 +50,46 @@ may need to install.
  ```
 apt install libncurses5
  ```
+ 
+**Linux:centos 8.2** 
+
+may need to install.
+ ```
+yum install ncurses*
+ ```
 
 **(2)**
- If the binary was not work, you can also run the python source code in the downloaded file. The Dependence was show blow.
+ If the binary was not work, you can also install the dependence through conda. The Dependence was show blow.
 
+The extract_raw_and_feature_fast.py use conda environment **nanom6A_step1**
+
+The predict_sites.py and nanoplot.py use conda environment **nanom6A_step2**
+
+conda environment shows below
+
+**Install miniconda or conda first (skipped if installed)**
+```
+wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py37_4.8.3-Linux-x86_64.sh
+chmod 777 Miniconda3-py37_4.8.3-Linux-x86_64.sh
+./Miniconda3-py37_4.8.3-Linux-x86_64.sh
+# After install, close the terminal and open a new one.
+```
+
+**Install environment**
+
+```
+tar -xvzf binary_2020_10_29.tar.gz
+cd binary_2020_10_29
+conda env create -f step1.yml
+conda env create -f step2.yml
+```
+If the network is low, you can also set the pip mirror.
+
+Example: in China, you can choose baidu's mirror.
+
+```
+pip config set global.index-url https://mirror.baidu.com/pypi/simple
+```
 
 **Source code dependence**
 
@@ -62,10 +98,10 @@ soft or module | version
 ---|---
 python                               |2.7.15
 h5py                               |2.9.0
-statsmodels                        |0.9.0
+statsmodels                        |0.10.0
 numpy                              |1.16.6
 tqdm                               |4.32.1
-######  predict_sites.py and plot_m6A.py
+######  predict_sites.py and nanoplot.py
 
 
 soft or module | version
@@ -79,31 +115,61 @@ xgboost                       |0.80
 pysam                         |0.16.0.1
 tqdm                          |4.39.0
 pycairo                       |1.19.1
-pyBigWig                      |0.3.17
+scikit-learn              |0.22
 **(3)**
  The easiest way is running with docker.
  
-**Under construction.**
+```
+sudo docker pull gaoyubang/nanom6a:v0
+```
 
 ## Run test files
 
 binary python executable file and example file
 ```
-tar -xvzf binary_2020_10_28.tar.gz
-cd binary_2020_10_28
+tar -xvzf binary_2020_10_29.tar.gz
+cd binary_2020_10_29
 sh run_binary.sh
 ```
+
 source code and example file
 
-Please make shure the dependence is ok.
+Please make sure the dependence is ok.
 ```
-tar -xvzf binary_2020_10_28.tar.gz
-cd binary_2020_10_28
+tar -xvzf binary_2020_10_29.tar.gz
+cd binary_2020_10_29
 sh run_source_code.sh
 ```
 
+docker image and example file
+
+```
+
+tar -xvzf binary_2020_10_29.tar.gz
+cd binary_2020_10_29
+sudo docker run -it -v `pwd`:/data gaoyubang/nanom6a:v0 /bin/bash
+cd /data/
+sh run_docker.sh 
+```
+
+**FAQ**
+
+
+The test output log show this error
+```
+cat: result_final/AGACA.mod: 没有那个文件或目录
+cat: result_final/AGACT.mod: 没有那个文件或目录
+cat: result_final/GAACA.mod: 没有那个文件或目录
+cat: result_final/GAACT.mod: 没有那个文件或目录
+```
+Because of the ACTB gene contains no the four kmer.
+```
+Fontconfig error: Cannot load default config file
+```
+Because of the cairo library incompatibility problem, It has no effect on the outcome.
+
 ## Details about how this pipeline works
-##### 1. Preprocess
+##### 1. Preproccess
 
 ###### Nanopore Basecalling using guppy (version 3.6.1)
 
@@ -121,7 +187,7 @@ sh run_source_code.sh
 
 `find single -name "*.fast5" >all_f5.list `
 
-##### 2.Extarct normalized raw signals and predict
+##### 2.extract normalized raw signals and predict
 
 ###### extract signals
 

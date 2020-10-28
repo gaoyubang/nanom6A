@@ -7,7 +7,7 @@ import os,sys,collections,re,multiprocessing
 # ~ ,commands,shutil
 from argparse import ArgumentParser
 from math import pi as p
-import pyBigWig
+#import pyBigWig
 from tqdm import tqdm
 def hex2rgb(hexstring, digits=2):
     """Converts a hexstring color to a rgb tuple.
@@ -92,7 +92,7 @@ def parsemod(modbed,fl):
 		name,chro=ele[0].split("|")
 		# ~ Potri.005G192100|Chr05	20941130|24|39|0.6153846153846154	20941586|11|53|0.20754716981132076
 		for idx in ele[1:]:
-			pos,p1,p2=[int(x) for x in idx.split("|")[:3]]
+			pos,p1,p2=[int(float(x)) for x in idx.split("|")[:3]]
 			if p1>=20:
 				oks_region["%s%s"%(chro,pos)]=1
 	ds=defaultdict(dict)
@@ -399,7 +399,7 @@ def wig(cr,h,scale,line,arrayline,minpos,maxpos,chro,wigs):
 				continue
 			cr.rectangle(50+(gp-minpos)*scale,hh-wiggg[gp]*scaleh,1*scale,wiggg[gp]*scaleh)
 			cr.fill()
-def plot_single(gene,mapdict,beddict,bwfiles,posfiles,annorr):
+def plot_single(gene,mapdict,beddict):
 	basefl=FLAGS.output.rstrip("/")
 	# ~ if gene not in modgs:
 		# ~ return False
@@ -419,8 +419,7 @@ def plot_single(gene,mapdict,beddict,bwfiles,posfiles,annorr):
 		sort_dict= sorted([beddict[x] for x in mapdict[gene]], key=lambda d:(int(d.split()[1])), reverse = True)
 	# ~ h=70/(len(sort_dict)+2)
 	h=5
-	nref=list(annorr[gene].keys())
-	hight_of=70+8+1.5*h*(len(sort_dict)+5)+50*len(bwfiles)+100+1.5*h*len(nref)
+	hight_of=70+8+1.5*h*(len(sort_dict)+5)+100
 	################################################
 	surface = cairo.PDFSurface("%s/%s.pdf"%(basefl,gene),500,hight_of)
 	# ~ sys.stderr.write("	%s has processed\n"%(gene))
@@ -437,30 +436,9 @@ def plot_single(gene,mapdict,beddict,bwfiles,posfiles,annorr):
 	global hh
 	hh=70+10+20
 	#######################
-	transcripts_nanoporerr(cr,h,scale,line,arrayline,list(annorr[gene].keys()),minpos,maxpos,gene)
 	#############
 	transcripts_nanopore(cr,h,scale,line,arrayline,sort_dict,minpos,maxpos,gene)
-	wig(cr,h,scale,line,arrayline,minpos,maxpos,chro,bwfiles)
 	#################################
-	for fls,dic,colour in posfiles:
-		hh+=10
-		cr.set_source_rgb(0,0,0)
-		cr.move_to(20,hh)
-		# ~ cr.save()
-		# ~ cr.rotate(p*270/180)
-		cr.show_text(fls)
-		cr.fill()
-		# ~ cr.restore()
-		(r,g,b)=hex2rgb(colour)
-		cr.set_source_rgb(r,g,b)
-		if gene in dic:
-			for pos in dic[gene].split("|"):
-				gp=int(pos)
-				# ~ print(gp,minpos,maxpos,scale,hh)
-				cr.move_to(50+(gp-minpos)*scale,hh)
-				cr.line_to(50+(gp-minpos)*scale,hh+1)
-				cr.stroke()
-				cr.fill()
 	#################################
 	cr.show_page()
 	surface.finish()
@@ -485,21 +463,14 @@ def run_main():
 	modbedrs=inputfl+"/ratio.%s.tsv"%(FLAGS.proba)
 	modbeddict,modgs=parsemod(modbed,modbedrs)
 	###############
-	bwfiles=parsebw(FLAGS.b)
 	###############
-	posfiles=parsepos(FLAGS.p)
-	############################################
-	annorr=parsebedrr(FLAGS.rr)
 	#############################
 	nums=[x for x in bedgenedict if x in modgs]
-	# ~ nums=[x for x in bedgenedict]
 	pbar=tqdm(total=len(nums),position=0, leave=True)
-	# ~ for i in bedgenedict:
-		# ~ if i in modgs:
 	for i in nums:
 		# ~ if i in ["Potri.002G113300","Potri.008G203100"]:
 		# ~ if i in ["Potri.009G061500","Potri.003G181400","Potri.007G031700","Potri.001G068100","Potri.002G107300","Potri.005G108900"]:
-		plot_single(i,bedgenedict,beddict,bwfiles,posfiles,annorr)
+		plot_single(i,bedgenedict,beddict)
 		pbar.update(1)
 	##########################################
 if __name__ == "__main__":
@@ -507,10 +478,6 @@ if __name__ == "__main__":
 	parser.add_argument('--input', required = True,help="prediction step output")
 	parser.add_argument('--proba', default=0.5,help='m6A site predict probability')
 	parser.add_argument('-o', '--output', required = True, help="Output file")
-	parser.add_argument('-b',required = False, help="bw file list")
-	parser.add_argument('-p',required = False, help="position file list")
-	parser.add_argument('-r',required = False, help="ref bed file")
-	parser.add_argument('-rr',required = False, help="ref bed anno file")
 	args = parser.parse_args(sys.argv[1:])
 	global FLAGS
 	FLAGS = args

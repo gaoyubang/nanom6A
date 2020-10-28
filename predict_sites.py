@@ -533,7 +533,7 @@ if __name__ == "__main__":
 	parser.add_argument('--cpu', default=8,help='cpu number usage')
 	parser.add_argument('--support', default=3,help='one m6A site supported read number')
 	parser.add_argument('--proba', default=0.5,help='m6A site predict probability')
-	parser.add_argument('--model', help='model dir')
+	parser.add_argument('--model',required = True, help='model dir')
 	args = parser.parse_args(sys.argv[1:])
 	global FLAGS
 	FLAGS = args
