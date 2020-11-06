@@ -12,13 +12,13 @@ To use the binary package, simply download the pre-compiled Linux binary from fo
  https://drive.google.com/drive/folders/1Dodt6uJC7lBihSNgT3Mexzpl_uqBagu0?usp=sharing
 
 
-Users can untar binary_2020_10_29.tar.gz, and make sure the binaries in your PATH environment variable.   
+Users can untar nanom6A_2020_11_6.tar.gz, and make sure the binaries in your PATH environment variable.   
 Testing the pre-compiled binary installation:
 
 
 ```
-tar -xvzf binary_2020_10_29.tar.gz
-cd binary_2020_10_29
+tar -xvzf nanom6A_2020_11_6.tar.gz
+cd nanom6A_2020_11_6
 sh run_binary.sh
 ```
 
@@ -65,10 +65,16 @@ chmod 777 Miniconda3-py37_4.8.3-Linux-x86_64.sh
 
 **Install conda environment**
 
+user may need to install libxrender and libxext.
 
 ```
-tar -xvzf binary_2020_10_29.tar.gz
-cd binary_2020_10_29
+apt install -y libxrender-dev
+apt install -y libxext-dev
+```
+
+```
+tar -xvzf nanom6A_2020_11_6.tar.gz
+cd nanom6A_2020_11_6
 conda env create -f step1.yml #install conda environment for extract_raw_and_feature_fast.py
 conda env create -f step2.yml #install conda environment for predict_sites.py and nanoplot.py
 ```
@@ -105,8 +111,8 @@ scikit-learn              |0.22
 Testing the installation (Please make sure the dependence was installed).
 
 ```
-tar -xvzf binary_2020_10_29.tar.gz
-cd binary_2020_10_29
+tar -xvzf nanom6A_2020_11_6.tar.gz
+cd nanom6A_2020_11_6
 sh run_source_code.sh
 ```
 
@@ -124,8 +130,8 @@ Testing the Docker:
 
 
 ```
-tar -xvzf binary_2020_10_29.tar.gz
-cd binary_2020_10_29
+tar -xvzf nanom6A_2020_11_6.tar.gz
+cd nanom6A_2020_11_6
 sudo docker run -it -v `pwd`:/data gaoyubang/nanom6a:v0 /bin/bash
 cd /data/
 sh run_docker.sh
@@ -136,19 +142,6 @@ sh run_docker.sh
 **FAQ**
 
 1. The screen/nohup log file might show following output:
-
-
-```
-cat: result_final/AGACA.mod: No such file or directory
-cat: result_final/AGACT.mod: No such file or directory
-cat: result_final/GAACA.mod: No such file or directory
-cat: result_final/GAACT.mod: No such file or directory
-```
-
-
-The tested ACTB gene  in the package did not contains m6A modification of above four kmers based on current Nanopore DRS reads.
-
-2. The screen/nohup log file might show following output:
 ```
 Fontconfig error: Cannot load default config file
 ```
