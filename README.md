@@ -6,7 +6,7 @@
 
 In order to make it easy to install Nanom6A, we provided three different methods for users.
 
-**(1)Installing a pre-compiled binary release (the first method to use nanom6A)**
+**(1). Installing a pre-compiled binary release (the first method to use nanom6A)**
 
 To use the binary package, simply download the pre-compiled Linux binary from following link:
  https://drive.google.com/drive/folders/1Dodt6uJC7lBihSNgT3Mexzpl_uqBagu0?usp=sharing
@@ -48,7 +48,7 @@ yum install ncurses*
 ```
 
 
-**(2)Testing Nanom6A from source (the second method to use nanom6A)**
+**(2). Testing Nanom6A from source (the second method to use nanom6A)**
 
 
 **In order to test nanopore from source code**, you can install the dependence through conda. 
@@ -86,7 +86,9 @@ h5py                               |2.9.0
 statsmodels                        |0.10.0
 numpy                              |1.16.6
 tqdm                               |4.32.1
+
 **Source code dependence of predict_sites.py and nanoplot.py**
+
 soft or module | version
 ---|---
 bedtools | v2.29.2
@@ -133,7 +135,7 @@ sh run_docker.sh
 
 **FAQ**
 
-1 The screen/nohup log file might show following output:
+1. The screen/nohup log file might show following output:
 
 
 ```
@@ -146,7 +148,7 @@ cat: result_final/GAACT.mod: No such file or directory
 
 The tested ACTB gene  in the package did not contains m6A modification of above four kmers based on current Nanopore DRS reads.
 
-2 
+2. The screen/nohup log file might show following output:
 ```
 Fontconfig error: Cannot load default config file
 ```
@@ -171,9 +173,9 @@ single_to_multi_fast5 -i guppy -s single -t 40 --recursive -n 8000
 ```
 
 
-```
-resquiggle raw signals
-```
+
+**resquiggle raw signals**
+
 
 
 ```
