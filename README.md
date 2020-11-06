@@ -195,6 +195,16 @@ extract_raw_and_feature_fast --cpu=20 --fl=files.txt -o result --clip=10
 ```
 predict_sites --cpu 20 -i result -o result_final -r data/anno.bed -g data/anno.fa
 ```
+(1) the -r parameter is file of referance corrd of transcripts.
+It should contains 6 colums
+
+chrom | start| end| name| .| strand
+---|---|---|---|---|---
+chr7|	5566779	|5570232|	ACTB|	.|	-
+
+(2) please check your genome file index, make shure you index with samtools index and picard CreateSequenceDictionary 
+
+
 
 
 The main output is the ratio.x.tsv and genome_abandance.x.bed in the output dir.
@@ -236,6 +246,15 @@ https://sra-download.ncbi.nlm.nih.gov/traces/sra36/SRZ/012881/SRR12881185/poplar
 repeat2:
 
 https://sra-download.ncbi.nlm.nih.gov/traces/sra68/SRZ/012822/SRR12822922/Ptr-WT-SDX-20200827.tar
+
+
+**Acknowledgement**
+
+**2020.11.6 16:56 Fuzhou**
+
+LiuFuyuxaing helped me with testing the code and improvement of the Manual!
+
+
 
 All suggestions are welcome to lfgu@fafu.edu.cn or yubanggaofafu@gmail.com
 
