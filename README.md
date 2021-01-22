@@ -12,13 +12,13 @@ To use the binary package, simply download the pre-compiled Linux binary from fo
  https://drive.google.com/drive/folders/1Dodt6uJC7lBihSNgT3Mexzpl_uqBagu0?usp=sharing
 
 
-Users can untar nanom6A_2020_11_6.tar.gz, and make sure the binaries in your PATH environment variable.   
+Users can untar nanom6A_2021_1_22.tar.gz, and make sure the binaries in your PATH environment variable.   
 Testing the pre-compiled binary installation:
 
 
 ```
-tar -xvzf nanom6A_2020_11_6.tar.gz
-cd nanom6A_2020_11_6
+tar -xvzf nanom6A_2021_1_22.tar.gz
+cd nanom6A_2021_1_22
 sh run_binary.sh
 ```
 
@@ -73,27 +73,18 @@ apt install -y libxext-dev
 ```
 
 ```
-tar -xvzf nanom6A_2020_11_6.tar.gz
-cd nanom6A_2020_11_6
-conda env create -f step1.yml #install conda environment for extract_raw_and_feature_fast.py
-conda env create -f step2.yml #install conda environment for predict_sites.py and nanoplot.py
+tar -xvzf nanom6A_2021_1_22.tar.gz
+cd nanom6A_2021_1_22
+conda env create -f conda.yml #install conda environment
 ```
 
 
 
 Following list was the detailed dependence:
 
-**Source code dependence of extract_raw_and_feature_fast.py**
 
-soft or module | version
----|---
-python                               |2.7.15
-h5py                               |2.9.0
-statsmodels                        |0.10.0
-numpy                              |1.16.6
-tqdm                               |4.32.1
 
-**Source code dependence of predict_sites.py and nanoplot.py**
+**Source code dependence**
 
 soft or module | version
 ---|---
@@ -101,6 +92,8 @@ bedtools | v2.29.2
 samtools | 1.3.1
 minimap2 | 2.17-r941
 python                               |3.7.3
+h5py                               |2.9.0
+statsmodels                        |0.10.0
 joblib                        |0.16.0
 xgboost                       |0.80
 pysam                         |0.16.0.1
@@ -111,8 +104,8 @@ scikit-learn              |0.22
 Testing the installation (Please make sure the dependence was installed).
 
 ```
-tar -xvzf nanom6A_2020_11_6.tar.gz
-cd nanom6A_2020_11_6
+tar -xvzf nanom6A_2021_1_22.tar.gz
+cd nanom6A_2021_1_22
 sh run_source_code.sh
 ```
 
@@ -130,8 +123,8 @@ Testing the Docker:
 
 
 ```
-tar -xvzf nanom6A_2020_11_6.tar.gz
-cd nanom6A_2020_11_6
+tar -xvzf nanom6A_2021_1_22.tar.gz
+cd nanom6A_2021_1_22
 sudo docker run -it -v `pwd`:/data gaoyubang/nanom6a:v0 /bin/bash
 cd /data/
 sh run_docker.sh
@@ -257,4 +250,5 @@ LiuFuyuxaing helped me with testing the code and improvement of the Manual!
 
 
 All suggestions are welcome to lfgu@fafu.edu.cn or yubanggaofafu@gmail.com
+
 

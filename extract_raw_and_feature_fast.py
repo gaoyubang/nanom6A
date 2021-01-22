@@ -58,13 +58,16 @@ def search_RRACH(signal,start,length,base,fn_string):
 	raw_signal = signal.tolist()
 	kmer_fillter="[AG][AG]AC[ACT]"
 	line=""
-	total_seq="".join([str(x) for x in base])
+	total_seq="".join([x.decode() for x in base])
 	clipnum=int(FLAGS.clip)
+	# ~ print(length)
+	# ~ print(base)
 	# ~ print(len(length))
 	for indx in range(len(length)):
 		if 2+clipnum<=indx<=len(length)-3-clipnum:
-			base0,base1,base2,base3,base4=[base[indx+x] for x in [-2,-1,0,1,2]]
+			base0,base1,base2,base3,base4=[base[indx+x].decode() for x in [-2,-1,0,1,2]]
 			kmer_now_t="%s%s%s%s%s"%(base0,base1,base2,base3,base4)
+			# ~ print(kmer_now_t)
 			# ~ print(indx,kmer_now_t)
 			list_have=[x.start() for x in re.finditer(kmer_fillter,kmer_now_t)]
 			if len(list_have)==0:
@@ -76,6 +79,7 @@ def search_RRACH(signal,start,length,base,fn_string):
 			length2=[length[indx+x] for x in [-2,-1,0,1,2]]
 			#############
 			line+="%s|%s|%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n"%(str(fn_string).split("/")[-1],indx,"N",base2,kmer_now_t,"|".join([str(x) for x in mean]),"|".join([str(x) for x in  std]),"|".join([str(x) for x in  md_intense]),"|".join([str(x) for x in length2]),kmer_now_t)
+	# ~ print(line)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 	return line
 def extract_file(input_file):
 	try:
@@ -85,7 +89,7 @@ def extract_file(input_file):
 		return False, (None, None)
 	raw_data = raw_data[::-1]
 	# ~ print(input_file,raw_start,raw_length,raw_label)
-	total_seq="".join([str(x) for x in raw_label])
+	total_seq="".join([x.decode() for x in raw_label])
 	ids=input_file.split("/")[-1]
 	total_seq=">%s\n%s\n"%(ids,total_seq)
 	line=search_RRACH(raw_data,raw_start,raw_length,raw_label,input_file)

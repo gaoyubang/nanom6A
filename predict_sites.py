@@ -332,6 +332,7 @@ def establish_ratio(i,read,readfeature):
 		nummod=len(poss_summary[subpos].keys())
 		if "%s|%s"%(chro,subpos) in readfeature:
 			numtotal=readfeature["%s|%s"%(chro,subpos)]
+			
 			if nummod<numlimit:
 				continue
 			if numtotal!=0:
@@ -351,14 +352,14 @@ def ratio(basefl):
 	###########
 	# ~ for pos in ["Chr10|21619580","Chr10|21620214"]:
 		# ~ print("bamdepth",pos,readfeature[pos])
-	##########
+	###########
 	output=open("%s/ratio.%s.tsv"%(basefl,limit),"w")
 	for i in read:
 		stats=establish_ratio(i,read,readfeature)
 		if stats:
 			output.write(stats+"\n")
 	output.close()
-	###########################################################
+	#################################################################################################
 def method2(basefl):
 	fa=FLAGS.input+".feature.fa"
 	loader=FastaFile(fa)
@@ -454,7 +455,7 @@ def run_main():
 	basefl=FLAGS.output.rstrip("/")
 	fl1=FLAGS.input+".feature.tsv"
 	# ~ fl1=FLAGS.input+".feature.tsv"
-	######################################
+	########################################
 	print("1.start predict")
 	########################################
 	#split file
@@ -531,7 +532,7 @@ if __name__ == "__main__":
 	parser.add_argument('-g', '--genome', required = True, help="genome file for mapping")
 	parser.add_argument('-r', '--referance', required = True, help="referance corrd of transcripts")
 	parser.add_argument('--cpu', default=8,help='cpu number usage')
-	parser.add_argument('--support', default=3,help='one m6A site supported read number')
+	parser.add_argument('--support', default=20,help='one m6A site supported read number')
 	parser.add_argument('--proba', default=0.5,help='m6A site predict probability')
 	parser.add_argument('--model',required = True, help='model dir')
 	args = parser.parse_args(sys.argv[1:])
