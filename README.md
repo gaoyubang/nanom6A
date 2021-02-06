@@ -12,13 +12,13 @@ To use the binary package, simply download the pre-compiled Linux binary from fo
  https://drive.google.com/drive/folders/1Dodt6uJC7lBihSNgT3Mexzpl_uqBagu0?usp=sharing
 
 
-Users can untar nanom6A_2021_1_22.tar.gz, and make sure the binaries in your PATH environment variable.   
+Users can untar nanom6A_2021_2_6.tar.gz, and make sure the binaries in your PATH environment variable.   
 Testing the pre-compiled binary installation:
 
 
 ```
-tar -xvzf nanom6A_2021_1_22.tar.gz
-cd nanom6A_2021_1_22
+tar -xvzf nanom6A_2021_2_6.tar.gz
+cd nanom6A_2021_2_6
 sh run_binary.sh
 ```
 
@@ -73,8 +73,8 @@ apt install -y libxext-dev
 ```
 
 ```
-tar -xvzf nanom6A_2021_1_22.tar.gz
-cd nanom6A_2021_1_22
+tar -xvzf nanom6A_2021_2_6.tar.gz
+cd nanom6A_2021_2_6
 conda env create -f conda.yml #install conda environment
 ```
 
@@ -104,8 +104,8 @@ scikit-learn              |0.22
 Testing the installation (Please make sure the dependence was installed).
 
 ```
-tar -xvzf nanom6A_2021_1_22.tar.gz
-cd nanom6A_2021_1_22
+tar -xvzf nanom6A_2021_2_6.tar.gz
+cd nanom6A_2021_2_6
 sh run_source_code.sh
 ```
 
@@ -123,8 +123,8 @@ Testing the Docker:
 
 
 ```
-tar -xvzf nanom6A_2021_1_22.tar.gz
-cd nanom6A_2021_1_22
+tar -xvzf nanom6A_2021_2_6.tar.gz
+cd nanom6A_2021_2_6
 sudo docker run -it -v `pwd`:/data gaoyubang/nanom6a:v0 /bin/bash
 cd /data/
 sh run_docker.sh

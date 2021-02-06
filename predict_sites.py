@@ -315,7 +315,7 @@ def parse_depth(fl,small_memory):
 def establish_ratio(i,read,readfeature):
 	genename,chro=i.split("|")
 	poss_summary=defaultdict(dict)
-	numlimit=0
+	numlimit=int(FLAGS.support)
 	poss=[]
 	######
 	# ~ Chr10	21971841	Potri.010G244500.1	GXB01149_20180715_FAH87828_GA10000_sequencing_run_20180715_NPL0183_I1_33361_read_252_ch_88_strand.fast5	162	CTACA
@@ -338,7 +338,7 @@ def establish_ratio(i,read,readfeature):
 			if numtotal!=0:
 				# ~ print("checks","%s|%s"%(chro,subpos),subpos,nummod,numtotal)
 				fre=nummod/numtotal
-				add.append("%s|%s|%s|%s"%(subpos,nummod,numtotal,fre))
+				add.append("%s|%s|%s|%s"%(subpos,nummod,int(numtotal),fre))
 	if add:
 		return("%s\t%s"%(i,"\t".join(add)))
 	else:
@@ -531,9 +531,9 @@ if __name__ == "__main__":
 	parser.add_argument('-o', '--output', required = True, help="Output file")
 	parser.add_argument('-g', '--genome', required = True, help="genome file for mapping")
 	parser.add_argument('-r', '--referance', required = True, help="referance corrd of transcripts")
-	parser.add_argument('--cpu', default=8,help='cpu number usage')
-	parser.add_argument('--support', default=20,help='one m6A site supported read number')
-	parser.add_argument('--proba', default=0.5,help='m6A site predict probability')
+	parser.add_argument('--cpu', default=8,help='cpu number usage,default=8')
+	parser.add_argument('--support', default=20,help='one m6A site supported read number,default=20')
+	parser.add_argument('--proba', default=0.5,help='m6A site predict probability,default=0.5')
 	parser.add_argument('--model',required = True, help='model dir')
 	args = parser.parse_args(sys.argv[1:])
 	global FLAGS
