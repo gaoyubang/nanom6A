@@ -273,11 +273,14 @@ def site2corrd(basefl):
 		ids,spos,seq=mark.split("|")
 		mod=float(mod)
 		####################
-		if mod>limit and ids in sites:
+		if mod>limit and ids in sites and spos in sites[ids]:
+			# ~ if spos not in sites[ids]:
+				# ~ print(ids,spos)
+				# ~ continue
 			gpos,ref,gbase,genename=sites[ids][spos]
 			line1["%s\t%s\t%s"%(ref,gpos,gpos)]=1
 			line2["{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(ref,gpos,genename,ids,spos,gbase)]=1
-	#################
+	########################
 	output1=open("%s/genome.%s.bed"%(basefl,limit),"w")
 	output1.write("\n".join(line1.keys()))
 	output1.close()
@@ -309,8 +312,10 @@ def parse_depth(fl,small_memory):
 		# ~ Chr01	8408	1
 		# ~ Chr10   20468025        CAAGG|+|CAAGG   1       c698ff1b-921e-40a0-bfd8-c1c76c05fb06
 		# ~ Chr06	8086941	TGACA	3	GXB01149_20180715_FAH87828_GA10000_sequencing_run_20180715_NPL0183_I1_33361_read_3121_ch_398_strand.fast5|GXB01149_20180715_FAH87828_GA10000_sequencing_run_20180715_NPL0183_I1_33361_read_22161_ch_467_strand.fast5|GXB01149_20180715_FAH87828_GA10000_sequencing_run_20180715_NPL0183_I1_33361_read_22479_ch_393_strand.fast5
-		if "%s%s"%(ele[0],int(ele[1])-1) in small_memory:
-			readfeature["%s|%s"%(ele[0],int(ele[1])-1)]=int(ele[2])+0.0
+		# ~ if "%s%s"%(ele[0],int(ele[1])-1) in small_memory:
+			# ~ readfeature["%s|%s"%(ele[0],int(ele[1])-1)]=int(ele[2])+0.0
+		if "%s%s"%(ele[0],int(ele[1])) in small_memory:
+			readfeature["%s|%s"%(ele[0],int(ele[1]))]=int(ele[2])+0.0
 	return readfeature
 def establish_ratio(i,read,readfeature):
 	genename,chro=i.split("|")
@@ -545,4 +550,3 @@ if __name__ == "__main__":
 	dependence_check()
 	run_main()
 ###########################################################
-

@@ -12,13 +12,13 @@ To use the binary package, simply download the pre-compiled Linux binary from fo
  https://drive.google.com/drive/folders/1Dodt6uJC7lBihSNgT3Mexzpl_uqBagu0?usp=sharing
 
 
-Users can untar nanom6A_2021_2_6.tar.gz, and make sure the binaries in your PATH environment variable.   
+Users can untar nanom6A_2021_3_4.tar.gz, and make sure the binaries in your PATH environment variable.   
 Testing the pre-compiled binary installation:
 
 
 ```
-tar -xvzf nanom6A_2021_2_6.tar.gz
-cd nanom6A_2021_2_6
+tar -xvzf nanom6A_2021_3_4.tar.gz
+cd nanom6A_2021_3_4
 sh run_binary.sh
 ```
 
@@ -73,8 +73,8 @@ apt install -y libxext-dev
 ```
 
 ```
-tar -xvzf nanom6A_2021_2_6.tar.gz
-cd nanom6A_2021_2_6
+tar -xvzf nanom6A_2021_3_4.tar.gz
+cd nanom6A_2021_3_4
 conda env create -f conda.yml #install conda environment
 ```
 
@@ -104,8 +104,8 @@ scikit-learn              |0.22
 Testing the installation (Please make sure the dependence was installed).
 
 ```
-tar -xvzf nanom6A_2021_2_6.tar.gz
-cd nanom6A_2021_2_6
+tar -xvzf nanom6A_2021_3_4.tar.gz
+cd nanom6A_2021_3_4
 sh run_source_code.sh
 ```
 
@@ -123,8 +123,8 @@ Testing the Docker:
 
 
 ```
-tar -xvzf nanom6A_2021_2_6.tar.gz
-cd nanom6A_2021_2_6
+tar -xvzf nanom6A_2021_3_4.tar.gz
+cd nanom6A_2021_3_4
 sudo docker run -it -v `pwd`:/data gaoyubang/nanom6a:v0 /bin/bash
 cd /data/
 sh run_docker.sh
@@ -247,6 +247,12 @@ https://sra-download.ncbi.nlm.nih.gov/traces/sra68/SRZ/012822/SRR12822922/Ptr-WT
 
 LiuFuyuxaing helped me with testing the code and improvement of the Manual!
 
+**2021.3.4 22:00 Fuzhou**
+
+Fixed bugs due to difference between tombo aligned sequence and minimap2 aligned sequence.
+Fixed bugs due to difference between Sam2tsv and samtools depth.
+
+Thank you to Hang Qin from Institute of Plant Physiology and Ecology for bringing this to our attention!
 
 
 All suggestions are welcome to lfgu@fafu.edu.cn or yubanggaofafu@gmail.com
