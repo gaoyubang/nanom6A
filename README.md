@@ -250,6 +250,7 @@ LiuFuyuxaing helped me with testing the code and improvement of the Manual!
 **2021.3.4 22:00 Fuzhou**
 
 Fixed bugs due to difference between tombo aligned sequence and minimap2 aligned sequence.
+
 Fixed bugs due to difference between Sam2tsv and samtools depth.
 
 Thank you to Hang Qin from Institute of Plant Physiology and Ecology for bringing this to our attention!
