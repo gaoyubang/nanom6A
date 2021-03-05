@@ -152,7 +152,7 @@ The incompatibility from cairo library caused this problem,which donot obstruct 
 guppy_basecaller -i $f5 -s guppy --num_callers 40 --recursive --fast5_out --config rna_r9.4.1_70bps_hac.cfg
 ```
 
-**merged single big fast5 into small size fast5 file**
+**Convert merged single big fast5 into small size fast5 file**
 
 ```
 single_to_multi_fast5 -i guppy -s single -t 40 --recursive -n 8000
