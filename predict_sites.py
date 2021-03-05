@@ -518,7 +518,7 @@ def dependence_check():
 	if os.path.isfile(faidx1) and os.path.isfile(faidx2):
 		pass
 	else:
-		sys.exit("please check your genome file index, make shure you index with samtools index and picard CreateSequenceDictionary !\n")
+		sys.exit("please check your genome file index, make shure you index with samtools index and picard CreateSequenceDictionary R=ref.fa O=ref.dict !\n")
 	sys.stderr.write("genome file index ok!\n")
 	##############
 	for com in ["samtools","bedtools","minimap2","sam2tsv"]:
