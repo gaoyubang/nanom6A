@@ -195,7 +195,7 @@ chrom | start| end| name| .| strand
 ---|---|---|---|---|---
 chr7|	5566779	|5570232|	ACTB|	.|	-
 
-(2) please check your genome file index, make sure you index with samtools index and picard CreateSequenceDictionary 
+(2) please check your genome file index, make sure you index with samtools index ref.fa and picard CreateSequenceDictionary R=ref.fa O=ref.dict 
 
 
 
@@ -230,7 +230,7 @@ python train.py
 
 
 
-**The fast5 raw file of nanopore direct RNA sequence in our unpublished studies:**
+**The fast5 raw file of nanopore direct RNA sequence in our published studies:**
 
 repeat1:
 
