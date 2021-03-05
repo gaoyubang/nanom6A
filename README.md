@@ -115,7 +115,7 @@ sh run_source_code.sh
 This is the simplest way to use nanom6A and save users from occasionally frustrating process
 
 ```
-sudo docker pull gaoyubang/nanom6a:v0
+sudo docker pull gaoyubang/nanom6a:v1
 ```
 
 
