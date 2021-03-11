@@ -179,7 +179,7 @@ def read2genome2(basefl):
 		elif ele[1]=="16":
 			strand="-"
 			lens=len(store[ids])
-			idspos=lens-idspos
+			idspos=lens-idspos-1
 		if ids in storepos and idspos in storepos[ids]:
 			kmer=store[ids][idspos-2:idspos+3]
 			line="%s|%s|%s"%(idspos,gpos,kmer)
@@ -500,6 +500,7 @@ def run_main():
 	read2genome2(basefl)
 	site2corrd(basefl)
 	ratio(basefl)
+	
 	##################################
 	# ~ method2(basefl)
 	####################################################################################
