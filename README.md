@@ -230,7 +230,7 @@ python train.py
 
 
 
-**The fast5 raw file of nanopore direct RNA sequence in our unpublished studies:**
+**The fast5 raw file of nanopore direct RNA sequence in our published studies:**
 
 repeat1:
 
