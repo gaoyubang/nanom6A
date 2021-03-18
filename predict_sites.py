@@ -480,7 +480,7 @@ def run_main():
 	os.system(cmd)
 	cmd="%ssamtools view %s/extract.sort.bam >%s/extract.sam"%(FLAGS.abspathexe,basefl,basefl)
 	os.system(cmd)
-	cmd="%ssamtools depth %s/extract.sort.bam >%s/extract.depth"%(FLAGS.abspathexe,basefl,basefl)
+	cmd="%ssamtools depth -d 100000000 %s/extract.sort.bam >%s/extract.depth"%(FLAGS.abspathexe,basefl,basefl)
 	os.system(cmd)
 	cmd="%ssamtools faidx %s"%(FLAGS.abspathexe,fl1)
 	os.system(cmd)
