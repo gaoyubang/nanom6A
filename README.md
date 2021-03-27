@@ -148,6 +148,7 @@ The incompatibility from cairo library caused this problem,which donot obstruct 
 **Basecalling using guppy (version 3.6.1)**
 
 
+
 ```
 guppy_basecaller -i $f5 -s guppy --num_callers 40 --recursive --fast5_out --config rna_r9.4.1_70bps_hac.cfg
 ```
@@ -162,7 +163,7 @@ single_to_multi_fast5 -i guppy -s single -t 40 --recursive -n 8000
 
 **resquiggle raw signals**
 
-
+The tombo resquiggle referance.transcript.fa should not be genome file, it should be the referance fasta file.
 
 ```
 tombo resquiggle --overwrite --basecall-group Basecall_1D_001 single referance.transcript.fa --processes 40 --fit-global-scale --include-event-stdev
@@ -184,6 +185,8 @@ extract_raw_and_feature_fast --cpu=20 --fl=files.txt -o result --clip=10
 ```
 
 **predicting m6A site**
+
+the -g option should be the genome file.
 
 ```
 predict_sites --cpu 20 -i result -o result_final -r data/anno.bed -g data/anno.fa
