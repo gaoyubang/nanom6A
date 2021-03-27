@@ -163,7 +163,7 @@ single_to_multi_fast5 -i guppy -s single -t 40 --recursive -n 8000
 
 **resquiggle raw signals**
 
-The tombo resquiggle referance.transcript.fa should not be genome file, it should be the referance fasta file.
+The tombo resquiggle referance.transcript.fa should not be genome file, it should be the referance gene fasta file.
 
 ```
 tombo resquiggle --overwrite --basecall-group Basecall_1D_001 single referance.transcript.fa --processes 40 --fit-global-scale --include-event-stdev
