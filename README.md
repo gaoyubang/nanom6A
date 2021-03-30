@@ -23,7 +23,7 @@ cd nanom6A_2021_3_18
 sh run_binary.sh
 ```
 
-User may still need sam2tsv in your $PATH, you can install it through conda (after 2021_3_18 version).
+User may still need sam2tsv in your $PATH (after 2021_3_18 version), you can install it through conda.
 
 
 
