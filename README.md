@@ -167,7 +167,7 @@ When the fast5 file was stored in multi_read formats, this step is required (mos
 You can check the size of one fast5 file, if it's about ~300MB, this step is required. If it's about ~100KB, You have to skip this step to avoid error.
 
 ```
-multi_to_single_fast5 -i guppy -s single -t 40 --recursive -n 8000
+multi_to_single_fast5 -i guppy -s single -t 40 --recursive 
 ```
 
 
