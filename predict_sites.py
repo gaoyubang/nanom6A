@@ -150,11 +150,21 @@ def tsvparese(basefl):
 def read2genome2(basefl):
 	cmd="cat {0}/AAACA.mod  {0}/AAACC.mod  {0}/AAACT.mod  {0}/AGACA.mod  {0}/AGACC.mod  {0}/AGACT.mod  {0}/GAACA.mod  {0}/GAACC.mod  {0}/GAACT.mod  {0}/GGACA.mod  {0}/GGACC.mod  {0}/GGACT.mod >{0}/total_mod.tsv".format(basefl)
 	os.system(cmd)
-	fl="{0}/total_mod.tsv".format(basefl)
+	cmd="cat {0}/*.*mod >{0}/total_prediction.tsv".format(basefl)
+	os.system(cmd)
+	fl="{0}/total_prediction.tsv".format(basefl)
 	storepos=readprediction(fl)
 	fl=FLAGS.input+".feature.fa"
 	store=readfasta(fl)
+	fl="{0}/extract.reference.bed12".format(basefl)
+	# ~ head result_final/extract.reference.bed12
+	# ~ NM_001197125.1	30	1440	1e0208b3-8061-451f-9415-73df9654f9da.fast5	0	+	30	1440	255,0,0	1	1410	0
+	readgene={}
+	for i in open(fl,"r"):
+		ele=i.rstrip().split()
+		readgene[ele[3]]=ele[0]
 	fl="%s/extract.sort.bam.tsv.gz"%(basefl)
+	##########################################
 	##########################################
 	# ~ chr04	W_003002_20180416_FAH83697_MN23410_sequencing_run_20180415_FAH83697_mRNA_WT_Col0_2918_23801_read_57_ch_290_strand.fast5	-	10201753	10201753	236|10203065|GAACA	275|10202917|AGACC	991|10202201|GGACA	1003|10202189|AGACC	1373|10201819|AAACA
 	# ~ c1,c2,c3=0,0,0
@@ -180,10 +190,10 @@ def read2genome2(basefl):
 			strand="-"
 			lens=len(store[ids])
 			idspos=lens-idspos-1
-		if ids in storepos and idspos in storepos[ids]:
+		if ids in storepos and idspos in storepos[ids] and ids in readgene:
 			kmer=store[ids][idspos-2:idspos+3]
 			line="%s|%s|%s"%(idspos,gpos,kmer)
-			total_m6A_reads["%s\t%s\t%s\tNA\tNA\t"%(chro,ids,strand)][line]=1
+			total_m6A_reads["%s\t%s\t%s\t%s\tNA\t"%(chro,ids,strand,readgene[ids])][line]=1
 	output=open("%s/sam_parse2.txt"%(basefl),"w")
 	for item in total_m6A_reads:
 		sorts=sorted(total_m6A_reads[item].keys(), key=lambda d:(int(d.split("|")[0])))
@@ -249,6 +259,16 @@ def pare_sam_site(fl,geneids):
 			spos,gpos,gbase=item.split("|")
 			store[ids][spos]=gpos,ref,gbase,genename
 	return store
+def pare_annotation2(fl):
+	geneids=defaultdict(dict)
+	#NM_001197123.2	52	1650	13d4649d-79d3-4593-9cfc-14fac5bee959.fast5	0	+	52	1650	255,0,0	2	175,1020	0,578
+	for i in open(fl,"r"):
+		ele=i.rstrip().split()
+		# ~ for item in ele[-1].split(","):
+			# ~ item=item.split(";")[0]
+		geneids[ele[3]]=ele[0]
+	return geneids
+###############################################################
 def pare_annotation(fl):
 	geneids=defaultdict(dict)
 	# ~ chr1	564442	564813	ENSG00000225972.1	+	278b2b79-27eb-47bb-94a6-0cf34c53cd47;0,68435139-630b-4d3d-8308-fa2eada3987e;0,
@@ -260,8 +280,10 @@ def pare_annotation(fl):
 	return geneids
 ###############################################################
 def site2corrd(basefl):
-	fl="%s/extract.bed6.gene"%(basefl)
-	geneids=pare_annotation(fl)
+	# ~ fl="%s/extract.bed6.gene"%(basefl)
+	# ~ geneids=pare_annotation(fl)
+	fl="%s/extract.reference.bed12"%(basefl)
+	geneids=pare_annotation2(fl)
 	fl="%s/sam_parse2.txt"%(basefl)
 	sites=pare_sam_site(fl,geneids)
 	fl="{0}/total_mod.tsv".format(basefl)
@@ -317,6 +339,49 @@ def parse_depth(fl,small_memory):
 		if "%s%s"%(ele[0],int(ele[1])) in small_memory:
 			readfeature["%s|%s"%(ele[0],int(ele[1]))]=int(ele[2])+0.0
 	return readfeature
+def parse_depth2(fl,small_memory):
+	readfeature={}
+	#      9 NM_001040668.1
+	for i in open(fl,"r"):
+		ele=i.strip().split()
+		# ~ Chr01	8408	1
+		# ~ Chr10   20468025        CAAGG|+|CAAGG   1       c698ff1b-921e-40a0-bfd8-c1c76c05fb06
+		# ~ Chr06	8086941	TGACA	3	GXB01149_20180715_FAH87828_GA10000_sequencing_run_20180715_NPL0183_I1_33361_read_3121_ch_398_strand.fast5|GXB01149_20180715_FAH87828_GA10000_sequencing_run_20180715_NPL0183_I1_33361_read_22161_ch_467_strand.fast5|GXB01149_20180715_FAH87828_GA10000_sequencing_run_20180715_NPL0183_I1_33361_read_22479_ch_393_strand.fast5
+		# ~ if "%s%s"%(ele[0],int(ele[1])-1) in small_memory:
+			# ~ readfeature["%s|%s"%(ele[0],int(ele[1])-1)]=int(ele[2])+0.0
+			
+		# ~ if "%s%s"%(ele[0],int(ele[1])) in small_memory:
+		readfeature[ele[1]]=int(ele[0])
+	return readfeature
+def parse_depth3(fl):
+	readfeature=defaultdict(dict)
+	#chr19	ef3b0b8e-623a-4e62-8d31-19e275acdf65.fast5	-	IRF3	NA		113|50168934|AGACA	165|50168098|GGACC	174|50168089|GAACC	217|50168046|GGACC	250|50168013|GAACA	382|50166722|AGACC	451|50166653|GGACC	463|50166641|GGACC	499|50166605|GAACT	514|50166506|GGACT
+	#      9 NM_001040668.1
+	for i in open(fl,"r"):
+		ele=i.strip().split()
+		# ~ Chr01	8408	1
+		# ~ Chr10   20468025        CAAGG|+|CAAGG   1       c698ff1b-921e-40a0-bfd8-c1c76c05fb06
+		# ~ Chr06	8086941	TGACA	3	GXB01149_20180715_FAH87828_GA10000_sequencing_run_20180715_NPL0183_I1_33361_read_3121_ch_398_strand.fast5|GXB01149_20180715_FAH87828_GA10000_sequencing_run_20180715_NPL0183_I1_33361_read_22161_ch_467_strand.fast5|GXB01149_20180715_FAH87828_GA10000_sequencing_run_20180715_NPL0183_I1_33361_read_22479_ch_393_strand.fast5
+		# ~ if "%s%s"%(ele[0],int(ele[1])-1) in small_memory:
+			# ~ readfeature["%s|%s"%(ele[0],int(ele[1])-1)]=int(ele[2])+0.0
+			
+		# ~ if "%s%s"%(ele[0],int(ele[1])) in small_memory:
+		for item in ele[5:]:
+			gpos=item.split("|")[1]
+			readfeature["%s|%s|%s"%(ele[3],ele[0],gpos)][ele[1]]=1
+	return readfeature
+def readprediction2(fl):
+	storepos={}
+	for i in open(fl,"r"):
+		ele=i.rstrip().split()
+		#######
+		#################
+		# ~ read["%s:%s"%(ele[0],ele[1])]=ele[2],ele[-1]
+		# ~ Chr02	2218542	POTRI.002G034400.2.V3.0	GXB01149_20180715_FAH87828_GA10000_sequencing_run_20180715_NPL0183_I1_33361_read_498_ch_413_strand.fast5	502	AAACA
+		# ~ if not ele[2].startswith("POTRI"):
+		# ~ continue
+		storepos["%s|%s"%(ele[0],ele[1])]=1
+	return storepos
 def establish_ratio(i,read,readfeature):
 	genename,chro=i.split("|")
 	poss_summary=defaultdict(dict)
@@ -335,9 +400,8 @@ def establish_ratio(i,read,readfeature):
 	for subpos in poss:
 		# ~ modids=[x.split("\t")[3] for x in read[i] if int(x.split("\t")[1])==subpos]
 		nummod=len(poss_summary[subpos].keys())
-		if "%s|%s"%(chro,subpos) in readfeature:
-			numtotal=readfeature["%s|%s"%(chro,subpos)]
-			
+		if "%s|%s|%s"%(genename,chro,subpos) in readfeature:
+			numtotal=len(readfeature["%s|%s|%s"%(genename,chro,subpos)].keys())
 			if nummod<numlimit:
 				continue
 			if numtotal!=0:
@@ -352,8 +416,12 @@ def ratio(basefl):
 	limit=float(FLAGS.proba)
 	fl="%s/genome_abandance.%s.bed"%(basefl,limit)
 	read,small_memory=paresread_sites(fl)
-	fl="%s/extract.depth"%(basefl)
-	readfeature=parse_depth(fl,small_memory)
+	# ~ fl="%s/extract.depth"%(basefl)
+	# ~ readfeature=parse_depth(fl,small_memory)
+	#      9 NM_001040668.1
+	# ~ readfeature=parse_depth2(fl,small_memory)
+	fl="%s/sam_parse2.txt"%(basefl)
+	readfeature=parse_depth3(fl)
 	###########
 	# ~ for pos in ["Chr10|21619580","Chr10|21620214"]:
 		# ~ print("bamdepth",pos,readfeature[pos])
@@ -365,95 +433,25 @@ def ratio(basefl):
 			output.write(stats+"\n")
 	output.close()
 	#################################################################################################
-def method2(basefl):
-	fa=FLAGS.input+".feature.fa"
-	loader=FastaFile(fa)
-	fl1=FLAGS.input+".feature.tsv"
-	output=open("%s/20bp.fa"%(basefl),"w")
-	for i in open(fl1,"r"):
-		ele=i.rstrip().split()
-		ids,pos=ele[0].split("|")[:-1]
-		pos=int(pos)
-		try:
-			seq=loader.fetch(ids,pos-30,pos+30)
-			output.write(">%s|%s\n%s\n"%(ids,pos,seq))
-		except:
-			print("ids %s %s,error"%(ids,pos))
-	output.close()
-	align_hisat2()
-	# ~ write_ratio()
-	# ~ oneline()
-def oneline():
-	basefl=FLAGS.output.rstrip("/")
-	fl="%s/20bp.fillter.ratio"%(basefl)
-	output=open("%s/20bp.fillter.oneline.ratio"%(basefl),"w")
-	alls=defaultdict(dict)
-	for i in open(fl,"r"):
-		# ~ TUG1	chr22|31372152	1	16.0	0.0625
-		name,item,n1,n2,rs=i.rstrip().split()
-		# ~ RPLP0|chr2	38708960|101|689.0|0.14658925979680695	38709006|30|709.0|0.04231311706629055	38709090|46|734.0|0.06267029972752043	38709165|33|747.0|0.04417670682730924	38709204|65|751.0|0.08655126498002663	38709223|59|751.0|0.07856191744340879	38709273|74|759.0|0.09749670619235837	38709291|257|759.0|0.3386034255599473	38709372|87|767.0|0.11342894393741851	38709395|63|772.0|0.08160621761658031	38709479|182|795.0|0.2289308176100629	38709486|117|798.0|0.14661654135338345	38709519|219|802.0|0.2730673316708229	38709620|107|811.0|0.1319358816276202	38709987|167|786.0|0.21246819338422393
-		chro,pos=item.split("|")
-		alls["%s|%s"%(name,chro)]["%s|%s|%s|%s"%(pos,n1,n2,rs)]=1
-	for item in alls:
-		output.write("%s\t%s\n"%(item,"\t".join(alls[item].keys())))
-	output.close()
-def write_ratio():
-	basefl=FLAGS.output.rstrip("/")
-	fl="%s/20bp.fillter.bed12"%(basefl)
-	alls=defaultdict(dict)
-	read_site={}
-	# ~ cc6m_2709_T7_ecorv	2703	2723	MinION_2_20181108_FAK35406_MN29046_sequencing_run_RNA081120181_29618_read_103979_ch_204_strand.fast5|355	60	+	2703	2723	255,0,0	1	20	0
-	# ~ cc6m_2459_T7_ecorv	875	895	MinION_2_20181108_FAK35406_MN29046_sequencing_run_RNA081120181_29618_read_23855_ch_465_strand.fast5|109	60	+	875	895	255,0,0	1	20	0
-	############################
+def replace_gene(basefl):
+	fl=FLAGS.isoform
+	# ~ head gene2transcripts.txt 
+	# ~ DDX11L1	NR_046018.2
+	rs_gene={}
 	for i in open(fl,"r"):
 		ele=i.rstrip().split()
-		# ~ MinION_2_20181108_FAK35406_MN29046_sequencing_run_RNA081120181_29618_read_2305_ch_326_strand.fast5_785.mrna2	cc6m_2459_T7_ecorv	+	813	833	833	833	1	813,	833,	0	MinION_2_20181108_FAK35406_MN29046_sequencing_run_RNA081120181_29618_read_2305_ch_326_strand.fast5_785.path2	none	none	-1,
-		chro,s,e=ele[0],int(ele[1]),int(ele[2])
-		ids,pos=ele[3].split("|")
-		if e-s==30:
-			pos=int((s+e)/2+1)
-			alls["%s|%s"%(chro,pos)][ids]=1
-			read_site[ele[3]]="%s|%s"%(chro,pos)
-	##############################
-	fl="%s/extract.bed6.gene"%(basefl)
-	geneids=pare_annotation(fl)
-	##############################
-	alls_mod=defaultdict(dict)
-	output=open("%s/20bp.fillter.gpos"%(basefl),"w")
-	fl="%s/total_mod.tsv"%(basefl)
-	gpos2gene={}
+		for item in ele[1:]:
+			rs_gene[item]=ele[0]
+	fl="%s/extract.reference.isoform.bed12"%(basefl)
+	output=open("%s/extract.reference.bed12"%(basefl),"w")
+	#NM_001197125.1	30	1440	1e0208b3-8061-451f-9415-73df9654f9da.fast5	0	+	30	1440	255,0,0	1	1410	0
 	for i in open(fl,"r"):
 		ele=i.rstrip().split()
-		ids,pos=ele[2].split("|")[:-1]
-		if "%s|%s"%(ids,pos) in read_site:
-			gpos=read_site["%s|%s"%(ids,pos)]
-			alls_mod[gpos][ids]=1
-			output.write("%s\t%s\t%s\n"%(i.rstrip(),gpos,geneids[ids]))
-			gpos2gene[gpos]=geneids[ids]
+		if ele[0] in rs_gene:
+			ele[0]=rs_gene[ele[0]]
+			output.write("\t".join(ele)+"\n")
 	output.close()
-	################################
-	output=open("%s/20bp.fillter.ratio"%(basefl),"w")
-	for gpos in alls_mod:
-		n1=len(alls_mod[gpos].keys())
-		n2=len(alls[gpos].keys())+0.0
-		output.write("%s\t%s\t%s\t%s\t%s\n"%(gpos2gene[gpos],gpos,n1,n2,n1/n2))
-		# ~ output.write("%s\t%s\t%s\n"%(gpos,"|".join(alls_mod[gpos].keys()),"|".join(alls[gpos].keys())))
-	output.close()
-	################################
-def align_hisat2():
-	basefl=FLAGS.output.rstrip("/")
-	# ~ cmd="mkdir -p %s/db"%(basefl)
-	# ~ os.system(cmd)
-	# ~ cmd="%s/hisat_pre/hisat2-build -p %s %s %s/db/fa_idx"%(FLAGS.abspath,FLAGS.cpu,FLAGS.genome,basefl)
-	# ~ os.system(cmd)
-	cmd="%s/hisat_pre/hisat2 -x %s/db/hg19/genome  -f -U %s/20bp.fa -S %s/20bp.sam -p %s"%(FLAGS.abspath,basefl,basefl,basefl,FLAGS.cpu)
-	os.system(cmd)
-	cmd="%s/samtools_pre view -@ %s -bS %s/20bp.sam  >%s/20bp.bam"%(FLAGS.abspath,FLAGS.cpu,basefl,basefl)
-	os.system(cmd)
-	cmd="%s/samtools_pre view -@ %s -F 256 -b %s/20bp.bam  >%s/20bp.fillter.bam"%(FLAGS.abspath,FLAGS.cpu,basefl,basefl)
-	os.system(cmd)
-	cmd="%s/bedtools_pre bamtobed -i %s/20bp.fillter.bam -bed12 -split -cigar >%s/20bp.fillter.bed12"%(FLAGS.abspath,basefl,basefl)
-	os.system(cmd)
+	####################
 def run_main():
 	cmd="mkdir %s"%(FLAGS.output)
 	os.system(cmd)
@@ -474,25 +472,22 @@ def run_main():
 	# ~ ####################################
 	print("2.start mapping")
 	fl1=FLAGS.input+".feature.fa"
+	cmd="%ssamtools faidx %s"%(FLAGS.abspathexe,fl1)
+	os.system(cmd)
 	cmd="%sminimap2 --secondary=no -ax splice -uf -k14 -t %s %s  %s|%ssamtools view -@ %s -bS - |%ssamtools sort -@ %s - >%s/extract.sort.bam"%(FLAGS.abspathexe,FLAGS.cpu,FLAGS.genome,fl1,FLAGS.abspathexe,FLAGS.cpu,FLAGS.abspathexe,FLAGS.cpu,basefl)
 	os.system(cmd)
 	cmd="%ssamtools index %s/extract.sort.bam"%(FLAGS.abspathexe,basefl)
 	os.system(cmd)
-	cmd="%ssamtools view %s/extract.sort.bam >%s/extract.sam"%(FLAGS.abspathexe,basefl,basefl)
-	os.system(cmd)
-	cmd="%ssamtools depth -d 100000000 %s/extract.sort.bam >%s/extract.depth"%(FLAGS.abspathexe,basefl,basefl)
-	os.system(cmd)
-	cmd="%ssamtools faidx %s"%(FLAGS.abspathexe,fl1)
-	os.system(cmd)
-	print("gene annotation")
-	cmd="%sbedtools bamtobed -bed12 -split -i %s/extract.sort.bam >%s/extract.bed12"%(FLAGS.abspathexe,basefl,basefl)
-	os.system(cmd)
-	cmd="cut -f 1,2,3,4,5,6 %s/extract.bed12 >%s/extract.bed6"%(basefl,basefl)
-	os.system(cmd)
-	cmd="%sbedtools intersect  -a %s -b %s/extract.bed6 -wo|bedtools groupby -g 1,2,3,4,6 -c 10 -o collapse >%s/extract.bed6.gene"%(FLAGS.abspathexe,FLAGS.referance,basefl,basefl)
-	os.system(cmd)
 	cmd='sam2tsv -r {1} {0}/extract.sort.bam|gzip -c >{0}/extract.sort.bam.tsv.gz'.format(basefl,FLAGS.genome)
 	os.system(cmd)
+	cmd="%sbedtools bamtobed -bed12 -split -i %s/extract.sort.bam >%s/extract.bed12"%(FLAGS.abspathexe,basefl,basefl)
+	os.system(cmd)
+	print("gene annotation")
+	cmd="%sminimap2 --secondary=no -ax splice -uf -k14 -t %s %s  %s|%ssamtools view -@ %s -bS - |%ssamtools sort -@ %s - >%s/extract.reference.sort.bam"%(FLAGS.abspathexe,FLAGS.cpu,FLAGS.referance,fl1,FLAGS.abspathexe,FLAGS.cpu,FLAGS.abspathexe,FLAGS.cpu,basefl)
+	os.system(cmd)
+	cmd="%sbedtools bamtobed -bed12 -split -i %s/extract.reference.sort.bam >%s/extract.reference.isoform.bed12"%(FLAGS.abspathexe,basefl,basefl)
+	os.system(cmd)
+	replace_gene(basefl)
 	print("parse bam")
 	# ~ ################################################################################
 	print("3.m6A site to genome sites")
@@ -500,7 +495,6 @@ def run_main():
 	read2genome2(basefl)
 	site2corrd(basefl)
 	ratio(basefl)
-	
 	##################################
 	# ~ method2(basefl)
 	####################################################################################
@@ -512,6 +506,30 @@ def dependence_check():
 	else:
 		sys.exit("please check your genome file, make shure it's end with fa or fasta!\n")
 	sys.stderr.write("genome file ok!\n")
+	#############
+	ref=FLAGS.referance
+	if ref.endswith("fa") or ref.endswith("fasta"):
+		pass
+	else:
+		sys.exit("please check your referance transcripts sequence file, make shure it's end with fa or fasta!\n")
+	sys.stderr.write("referance transcripts sequence file ok!\n")
+	#############
+	#gene to trans
+	fl=FLAGS.isoform
+	trans={}
+	for i in open(fl,"r"):
+		ele=i.rstrip().split()
+		for item in ele[1:]:
+			trans[item]=ele[0]
+	#############
+	ref=FLAGS.referance
+	svs_id={}
+	for i in open(ref,"r"):
+		ele=i.rstrip().split()
+		if i.startswith(">"):
+			id1=ele[0].lstrip(">")
+			if id1 not in trans:
+				sys.exit("please check %s transcripts not find in %s file!\n"%(id1,fl))
 	#############
 	#genome file index
 	faidx1=".".join(fa.split(".")[:-1])+".dict"
@@ -536,7 +554,8 @@ if __name__ == "__main__":
 	parser.add_argument('-i', '--input', required = True,help="features_extract")
 	parser.add_argument('-o', '--output', required = True, help="Output file")
 	parser.add_argument('-g', '--genome', required = True, help="genome file for mapping")
-	parser.add_argument('-r', '--referance', required = True, help="referance corrd of transcripts")
+	parser.add_argument('-r', '--referance', required = True, help="referance transcripts sequence file")
+	parser.add_argument('-b', '--isoform', required = True, help="gene to referance transcripts information")
 	parser.add_argument('--cpu', default=8,help='cpu number usage,default=8')
 	parser.add_argument('--support', default=20,help='one m6A site supported read number,default=20')
 	parser.add_argument('--proba', default=0.5,help='m6A site predict probability,default=0.5')

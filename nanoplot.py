@@ -78,12 +78,13 @@ def parsebedrr(bed):
 		drsbed[name][i.rstrip()]=1
 	return drsbed
 def parebedgene(bedgene):
+	#ACTB	8	1806	40020fe5-54fc-4d83-9e3f-8090ef0f9484.fast5	60	+	8	1806	255,0,0	1	1798	0
 	ds=defaultdict(dict)
 	for i in open(bedgene,"r"):
 		ele=i.rstrip().split()
 		# ~ chr1	761586	762902	LINC00115	-	DESKTOP_0G0ETDR_20181109_FAK25608_MN30022_sequencing_run_Kris_HEK_20181109_55198_read_5047_ch_441_strand.fast5,DESKTOP_0G0ETDR_20181109_FAK25608_MN30022_sequencing_run_Kris_HEK_20181109_55198_read_12129_ch_39_strand.fast5,DESKTOP_0G0ETDR_20181109_FAK25608_MN30022_sequencing_run_Kris_HEK_20181109_55198_read_12134_ch_39_strand.fast5
-		for item in ele[-1].split(","):
-			ds[ele[3]][item]=1
+		# ~ for item in ele[-1].split(","):
+		ds[ele[0]][ele[3]]=1
 	return ds
 def parsemod(modbed,fl):
 	oks_region={}
@@ -455,7 +456,7 @@ def run_main():
 	beddict=parebed(bed)
 	########
 	#parse bed gene
-	bedgene=inputfl+"/extract.bed6.gene"
+	bedgene=inputfl+"/extract.reference.bed12"
 	bedgenedict=parebedgene(bedgene)
 	########
 	global modbeddict,modgs,bwlist

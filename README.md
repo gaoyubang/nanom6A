@@ -14,18 +14,18 @@ To use the binary package, simply download the pre-compiled Linux binary from fo
  https://drive.google.com/drive/folders/1Dodt6uJC7lBihSNgT3Mexzpl_uqBagu0?usp=sharing
 
 
-Users can untar nanom6A_2021_3_18.tar.gz, and make sure the binaries in your PATH environment variable.   
+Users can untar nanom6A_2021_10_22.tar.gz, and make sure the binaries in your PATH environment variable.   
 Testing the pre-compiled binary installation:
 
 
 
 ```
-tar -xvzf nanom6A_2021_3_18.tar.gz
-cd nanom6A_2021_3_18
+tar -xvzf nanom6A_2021_10_22.tar.gz
+cd nanom6A_2021_10_22
 sh run_binary.sh
 ```
 
-User may still need sam2tsv in your $PATH (after 2021_3_18 version), you can install it through conda.
+User may still need sam2tsv in your $PATH (after 2021_10_22 version), you can install it through conda.
 
 
 
@@ -83,8 +83,8 @@ apt install -y libxext-dev
 ```
 
 ```
-tar -xvzf nanom6A_2021_3_18.tar.gz
-cd nanom6A_2021_3_18
+tar -xvzf nanom6A_2021_10_22.tar.gz
+cd nanom6A_2021_10_22
 conda env create -f conda.yml #install conda environment
 ```
 
@@ -114,8 +114,8 @@ scikit-learn              |0.22
 Testing the installation (Please make sure the dependence was installed).
 
 ```
-tar -xvzf nanom6A_2021_3_18.tar.gz
-cd nanom6A_2021_3_18
+tar -xvzf nanom6A_2021_10_22.tar.gz
+cd nanom6A_2021_10_22
 sh run_source_code.sh
 ```
 
@@ -133,8 +133,8 @@ Testing the Docker:
 
 
 ```
-tar -xvzf nanom6A_2021_3_18.tar.gz
-cd nanom6A_2021_3_18
+tar -xvzf nanom6A_2021_10_22.tar.gz
+cd nanom6A_2021_10_22
 sudo docker run -it -v `pwd`:/data gaoyubang/nanom6a:v1 /bin/bash
 cd /data/
 sh run_docker.sh
@@ -202,18 +202,18 @@ extract_raw_and_feature_fast --cpu=20 --fl=files.txt -o result --clip=10
 the -g option should be the genome file.
 
 ```
-predict_sites --cpu 20 -i result -o result_final -r data/anno.bed -g data/anno.fa
+predict_sites --cpu 20 -i result -o result_final -r data/ref.fa -g data/anno.fa -b data/gene2transcripts.txt 
 ```
-(1) the -r parameter is file of referance corrd of transcripts.
-It should contains 6 colums
+(1) the -r parameter is file of referance transcripts sequence.
 
-chrom | start| end| name| .| strand
----|---|---|---|---|---
-chr7|	5566779	|5570232|	ACTB|	.|	-
+>NM_001354612.2 CDS=54-1631
+ggggccacgctgcgggcccgggccatggccgccgccgatgccgagAGACACCTATGGCTGCCGATGAAGGCTCAGCAGAGAAACA ....
 
-(2) please check your genome file index, make sure you index with samtools index ref.fa and picard CreateSequenceDictionary R=ref.fa O=ref.dict 
+(2) the -g  parameter: please check your genome file index, make sure you index with samtools index ref.fa and picard CreateSequenceDictionary R=ref.fa O=ref.dict 
 
+(3) the -b  parameter: the Gene information corresponding to each reference transcript.
 
+EHMT1	NM_001354612.2	NM_001354611.2	NM_001145527.2	NM_001354259.2	NM_001354263.2	NM_024757.5
 
 
 The main output is the ratio.x.tsv and genome_abandance.x.bed in the output dir.
@@ -283,6 +283,9 @@ Fixed bugs lead to 1-based m6A sites in negative strand , Thank you to Yan Xin f
 
 Fixed bugs due to samtools depth default 8000 maximum coverage!
 
+**2021.10.22 12:15 Fuzhou**
+
+Fixed bugs due to overlap genes!
 
 All suggestions are welcome to lfgu@fafu.edu.cn or yubanggaofafu@gmail.com
 
