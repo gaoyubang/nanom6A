@@ -206,8 +206,10 @@ predict_sites --cpu 20 -i result -o result_final -r data/ref.fa -g data/anno.fa 
 ```
 (1) the -r parameter is file of referance transcripts sequence.
 
+```
 >NM_001354612.2 CDS=54-1631
 ggggccacgctgcgggcccgggccatggccgccgccgatgccgagAGACACCTATGGCTGCCGATGAAGGCTCAGCAGAGAAACA ....
+```
 
 (2) the -g  parameter: please check your genome file index, make sure you index with samtools index ref.fa and picard CreateSequenceDictionary R=ref.fa O=ref.dict 
 
