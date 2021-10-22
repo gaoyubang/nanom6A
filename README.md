@@ -215,8 +215,9 @@ ggggccacgctgcgggcccgggccatggccgccgccgatgccgagAGACACCTATGGCTGCCGATGAAGGCTCAGCAGAG
 
 (3) the -b  parameter: the Gene information corresponding to each reference transcript.
 
-EHMT1	NM_001354612.2	NM_001354611.2	NM_001145527.2	NM_001354259.2	NM_001354263.2	NM_024757.5
-
+```
+EHMT1 NM_001354612.2	NM_001354611.2	NM_001145527.2	NM_001354259.2	NM_001354263.2	NM_024757.5
+```
 
 The main output is the ratio.x.tsv and genome_abandance.x.bed in the output dir.
 The header of ratio.x.tsv.
