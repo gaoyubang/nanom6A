@@ -405,19 +405,20 @@ def plot_single(gene,mapdict,beddict):
 	# ~ if gene not in modgs:
 		# ~ return False
 	# ~ chr1	12000	14406	DESKTOP_0G0ETDR_20181109_FAK25608_MN30022_sequencing_run_Kris_HEK_20181109_55198_read_52220_ch_182_strand.fast5	10	+	12000	14406	255,0,0	3	227,109,1186	0,612,1220
-	minpos  = min(int(beddict[x].split()[1]) for x in mapdict[gene])
-	maxpos  = max(int(beddict[x].split()[2]) for x in mapdict[gene])
+	minpos  = min(int(beddict[x].split()[1]) for x in mapdict[gene] if x in beddict)
+	maxpos  = max(int(beddict[x].split()[2]) for x in mapdict[gene] if x in beddict)
 	# ~ print(mapdict[gene])
 	# ~ print(beddict)
 	# ~ print(mapdict[gene])
 	# ~ print(mapdict[gene].keys()[0],beddict[mapdict[gene].keys()[0]])
-	strand = beddict[list(mapdict[gene].keys())[0]].split()[5]
-	chro=beddict[list(mapdict[gene].keys())[0]].split()[0]
+	lines=[x for x in list(mapdict[gene].keys()) if x in beddict]
+	strand = beddict[lines[0]].split()[5]
+	chro=beddict[lines[0]].split()[0]
 	# ~ sort_dict= sorted([beddict[x] for x in mapdict[gene]], key=lambda d:(int(d.split()[2])-int(d.split()[1])), reverse = True)
 	if strand=="+":
-		sort_dict= sorted([beddict[x] for x in mapdict[gene]], key=lambda d:(int(d.split()[2])), reverse = True)
+		sort_dict= sorted([beddict[x] for x in mapdict[gene] if x in beddict], key=lambda d:(int(d.split()[2])), reverse = True)
 	else:
-		sort_dict= sorted([beddict[x] for x in mapdict[gene]], key=lambda d:(int(d.split()[1])), reverse = True)
+		sort_dict= sorted([beddict[x] for x in mapdict[gene] if x in beddict], key=lambda d:(int(d.split()[1])), reverse = True)
 	# ~ h=70/(len(sort_dict)+2)
 	h=5
 	hight_of=70+8+1.5*h*(len(sort_dict)+5)+100
