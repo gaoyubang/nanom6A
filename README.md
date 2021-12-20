@@ -2,6 +2,8 @@
 
 **Quantitative profiling of N6-methyladenosine at single-base resolution using Nanopore direct RNA sequencing**
 
+The default model is applicable only to "MinION or GridION R9.4.1 flowcells".
+
 Gao, Y., Liu, X., Wu, B., Wang, H., Xi, F., Kohnen, M. V., ... & Gu, L. (2021). Quantitative profiling of N 6-methyladenosine at single-base resolution in stem-differentiating xylem of Populus trichocarpa using Nanopore direct RNA sequencing. Genome Biology, 22(1), 1-17.
 
 **Install quick-start**
