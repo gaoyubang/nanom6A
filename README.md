@@ -228,20 +228,13 @@ gene\|chrom | coordinate\|mod number\|total number\|mod ratio
 ---|---
 ACTB\|chr7|	5566813\|162\|639.0\|0.2535211267605634	
 
-The genome_abandance.x.bed is the temp file without fillter using --support. 
-
-The header of genome_abandance.x.bed.
-
-chrom | coordinate|gene| read id|read pos|kmer
----|---|---|---|---|---
-chr7|5567320|ACTB	|e88129423ae1.fast5	|1257	|AAACA
-
-Fillter genome_abandance.x.bed
+The genome_abandance.x.bed is the temp file without fillter using --support, you can fillter it with following cmd 
 
 
+```
 wget https://raw.githubusercontent.com/gaoyubang/nanom6A/main/fillter_output.py
-
 python fillter_output.py result_final/ratio.x.tsv result_final/genome_abandance.x.bed
+```
 
 The output result_final/genome_abandance.x.bed.filler.bed is the filltered output.
 
