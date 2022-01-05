@@ -221,12 +221,14 @@ ggggccacgctgcgggcccgggccatggccgccgccgatgccgagAGACACCTATGGCTGCCGATGAAGGCTCAGCAGAG
 EHMT1 NM_001354612.2	NM_001354611.2	NM_001145527.2	NM_001354259.2	NM_001354263.2	NM_024757.5
 ```
 
-The main output is the ratio.x.tsv and genome_abandance.x.bed in the output dir.
+The main output is the ratio.x.tsv in the output dir.
 The header of ratio.x.tsv.
 
 gene\|chrom | coordinate\|mod number\|total number\|mod ratio 
 ---|---
 ACTB\|chr7|	5566813\|162\|639.0\|0.2535211267605634	
+
+The genome_abandance.x.bed is the temp file without fillter using --support. 
 
 The header of genome_abandance.x.bed.
 
