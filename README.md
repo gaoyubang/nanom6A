@@ -16,18 +16,18 @@ To use the binary package, simply download the pre-compiled Linux binary from fo
  https://drive.google.com/drive/folders/1Dodt6uJC7lBihSNgT3Mexzpl_uqBagu0?usp=sharing
 
 
-Users can untar nanom6A_2021_10_22.tar.gz, and make sure the binaries in your PATH environment variable.   
+Users can untar nanom6A_2022_12_23.tar.gz, and make sure the binaries in your PATH environment variable.   
 Testing the pre-compiled binary installation:
 
 
 
 ```
-tar -xvzf nanom6A_2021_10_22.tar.gz
-cd nanom6A_2021_10_22
+tar -xvzf nanom6A_2022_12_23.tar.gz
+cd nanom6A_2022_12_23
 sh run_binary.sh
 ```
 
-User may still need sam2tsv in your $PATH (after 2021_10_22 version), you can install it through conda.
+User may still need sam2tsv in your $PATH (after 2022_12_23 version), you can install it through conda.
 
 
 
@@ -85,8 +85,8 @@ apt install -y libxext-dev
 ```
 
 ```
-tar -xvzf nanom6A_2021_10_22.tar.gz
-cd nanom6A_2021_10_22
+tar -xvzf nanom6A_2022_12_23.tar.gz
+cd nanom6A_2022_12_23
 conda env create -f conda.yml #install conda environment
 ```
 
@@ -116,8 +116,8 @@ scikit-learn              |0.22
 Testing the installation (Please make sure the dependence was installed).
 
 ```
-tar -xvzf nanom6A_2021_10_22.tar.gz
-cd nanom6A_2021_10_22
+tar -xvzf nanom6A_2022_12_23.tar.gz
+cd nanom6A_2022_12_23
 sh run_source_code.sh
 ```
 
@@ -135,8 +135,8 @@ Testing the Docker:
 
 
 ```
-tar -xvzf nanom6A_2021_10_22.tar.gz
-cd nanom6A_2021_10_22
+tar -xvzf nanom6A_2022_12_23.tar.gz
+cd nanom6A_2022_12_23
 sudo docker run -it -v `pwd`:/data gaoyubang/nanom6a:v1 /bin/bash
 cd /data/
 sh run_docker.sh
@@ -220,6 +220,8 @@ ggggccacgctgcgggcccgggccatggccgccgccgatgccgagAGACACCTATGGCTGCCGATGAAGGCTCAGCAGAG
 ```
 EHMT1 NM_001354612.2	NM_001354611.2	NM_001145527.2	NM_001354259.2	NM_001354263.2	NM_024757.5
 ```
+(4) the --support  parameter: The minimum number of DRS reads supporting a modified m6A site in genomic coordinates from one million DRS reads.  The default is 10.  Due to the low sequencing depth for DRS reads, quantification of m6A modification in low abundance gene is difficult.  With this option, the pipeline will attempt to normalize library using this formula: Total number of DRS reads/1,000, 000 to generate \'per million scaling factor'.   Then the  'per million scaling factor'  multiply reads from -r option to generate the cuttoff for the number of modified transcripts  for each modified m6A site.   For example, the option (-r = 10, total DRS reads=2, 000, 000) will generate (2000000/1000000)*10=20 as cuttoff. Than means that modified A base supported by at least 20 modified transcripts will be identified as modified m6A sites in genomic coordinates.
+
 
 The main output is the ratio.x.tsv in the output dir.
 The header of ratio.x.tsv.
@@ -302,6 +304,11 @@ Fixed bugs due to samtools depth default 8000 maximum coverage!
 **2021.10.22 12:15 Fuzhou**
 
 Fixed bugs due to overlap genes!
+
+**2022.12.24 19:27 NanYang**
+
+add --support parameter to normlaize sequence depth。
+
 
 All suggestions are welcome to lfgu@fafu.edu.cn or yubanggaofafu@gmail.com
 

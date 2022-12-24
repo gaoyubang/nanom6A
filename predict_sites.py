@@ -385,7 +385,7 @@ def readprediction2(fl):
 def establish_ratio(i,read,readfeature):
 	genename,chro=i.split("|")
 	poss_summary=defaultdict(dict)
-	numlimit=int(FLAGS.support)
+	numlimit=int(FLAGS.factor)
 	poss=[]
 	######
 	# ~ Chr10	21971841	Potri.010G244500.1	GXB01149_20180715_FAH87828_GA10000_sequencing_run_20180715_NPL0183_I1_33361_read_252_ch_88_strand.fast5	162	CTACA
@@ -549,6 +549,15 @@ def dependence_check():
 			sys.exit("please check %s in your $PATH !\n"%(com))
 	#############
 	sys.stderr.write("check finsh!\n")
+	############################################
+	fl1=FLAGS.input+".feature.fa"
+	n=0
+	for i in open(fl1,"r"):
+		if i.startswith(">"):
+			n+=1
+	FLAGS.factor=int(n*int(FLAGS.support)/1000000)
+	# ~ print(FLAGS.factor)
+	############################################
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Predict to genome sites.')
 	parser.add_argument('-i', '--input', required = True,help="features_extract")
@@ -557,7 +566,7 @@ if __name__ == "__main__":
 	parser.add_argument('-r', '--referance', required = True, help="referance transcripts sequence file")
 	parser.add_argument('-b', '--isoform', required = True, help="gene to referance transcripts information")
 	parser.add_argument('--cpu', default=8,help='cpu number usage,default=8')
-	parser.add_argument('--support', default=20,help='one m6A site supported read number,default=20')
+	parser.add_argument('--support', default=10,help='The minimum number of DRS reads supporting a modified m6A site in genomic coordinates from one million DRS reads.  The default is 10.  Due to the low sequencing depth for DRS reads, quantification of m6A modification in low abundance gene is difficult.  With this option, the pipeline will attempt to normalize library using this formula: Total number of DRS reads/1,000, 000 to generate \'per million scaling factor\'.   Then the  \'per million scaling factor\'  multiply reads from -r option to generate the cuttoff for the number of modified transcripts  for each modified m6A site.   For example, the option (-r = 10, total DRS reads=2, 000, 000) will generate (2000000/1000000)*10=20 as cuttoff. Than means that modified A base supported by at least 20 modified transcripts will be identified as modified m6A sites in genomic coordinates.')
 	parser.add_argument('--proba', default=0.5,help='m6A site predict probability,default=0.5')
 	parser.add_argument('--model',required = True, help='model dir')
 	args = parser.parse_args(sys.argv[1:])
@@ -570,3 +579,4 @@ if __name__ == "__main__":
 	dependence_check()
 	run_main()
 ###########################################################
+######
