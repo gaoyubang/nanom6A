@@ -222,6 +222,8 @@ EHMT1 NM_001354612.2	NM_001354611.2	NM_001145527.2	NM_001354259.2	NM_001354263.2
 ```
 (4) the --support  parameter: The minimum number of DRS reads supporting a modified m6A site in genomic coordinates from one million DRS reads.  The default is 10.  Due to the low sequencing depth for DRS reads, quantification of m6A modification in low abundance gene is difficult.  With this option, the pipeline will attempt to normalize library using this formula: Total number of DRS reads/1,000, 000 to generate \'per million scaling factor'.   Then the  'per million scaling factor'  multiply reads from -r option to generate the cuttoff for the number of modified transcripts  for each modified m6A site.   For example, the option (-r = 10, total DRS reads=2, 000, 000) will generate (2000000/1000000)*10=20 as cuttoff. Than means that modified A base supported by at least 20 modified transcripts will be identified as modified m6A sites in genomic coordinates.
 
+In the test data, the parameter was set 30442 dut to small library size。But in the actual data, the parameter was set 10 in default。 
+
 
 The main output is the ratio.x.tsv in the output dir.
 The header of ratio.x.tsv.
